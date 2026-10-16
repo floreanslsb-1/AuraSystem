@@ -1,0 +1,1300 @@
+<!-- ===================== TAB BARANG MASUK ===================== -->
+<style>
+  .card { background:#fff; border:1px solid #e4e4e7; border-radius:10px; padding:12px; margin-bottom:10px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }
+  .grid label, .fl { font-size:11.5px; color:#71717a; display:block; }
+  .grid input, .grid select { width:100%; }
+  .ln-h { display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap; align-items:baseline; }
+  .ln-h b { font-size:14px; }
+  .st-Restock { border-left:5px solid #6aa84f; } .st-Ragu { border-left:5px solid #e69138; } .st-Baru { border-left:5px solid #4b5e7a; }
+  .up { background:#fde2e2 !important; } .upt { color:#b42318; font-weight:700; }
+  .ok { color:#3b6d2a; font-weight:700; }
+  .chip { display:inline-block; background:#eef1f5; color:#4b5e7a; border-radius:12px; padding:3px 9px; margin:3px 4px 0 0; font-size:12px; cursor:pointer; }
+  .recon { padding:9px 12px; border-radius:8px; font-weight:700; margin-top:8px; }
+  .recon.g { background:#e2efda; color:#3b6d2a; } .recon.r { background:#fde2e2; color:#b42318; }
+  .edrow { display:flex; gap:6px; margin-top:4px; align-items:center; }
+  .info2 { font-size:12.5px; margin-top:6px; line-height:1.55; }
+  .thumbs { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+  .thumb { position:relative; width:110px; border:1px solid #e4e4e7; border-radius:8px; overflow:hidden; background:#fafafa; font-size:11px; text-align:center; }
+  .thumb img { width:100%; height:130px; object-fit:cover; display:block; }
+  .thumb .x { position:absolute; top:3px; right:3px; background:#27303f; color:#fff; border-radius:50%; width:20px; height:20px; line-height:20px; cursor:pointer; }
+  .ln { background:#fff; border:1px solid #e4e4e7; border-radius:10px; margin-bottom:8px; overflow:hidden; }
+  .ln-sum { display:grid; grid-template-columns:28px 1.4fr 1.6fr auto; gap:10px; align-items:center; padding:10px 12px; cursor:pointer; }
+  .ln-sum:hover { background:#fafafa; }
+  .dot { width:22px; height:22px; border-radius:50%; color:#fff; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; }
+  .d-Restock { background:#6aa84f; } .d-Ragu { background:#e69138; } .d-Baru { background:#4b5e7a; }
+  .ln-body { border-top:1px solid #f0f0f2; padding:10px 12px 12px; background:#fcfcfd; }
+  .need { color:#b42318; font-size:12px; font-weight:700; white-space:nowrap; } .done { color:#3b6d2a; font-size:12px; font-weight:700; white-space:nowrap; }
+  .seg button { background:#fff; color:#4b5e7a; border:1px solid #c9d2de; margin-right:4px; }
+  .seg button.on { background:#4b5e7a; color:#fff; }
+  .steps { display:flex; gap:6px; flex-wrap:wrap; margin:6px 0 10px; font-size:12.5px; }
+  .steps span { background:#eef1f5; color:#4b5e7a; padding:4px 10px; border-radius:12px; }
+  .steps span.ok { background:#e2efda; color:#3b6d2a; } .steps span.no { background:#fde2e2; color:#b42318; }
+  .sub { color:#71717a; font-size:12px; }
+  @media (max-width:700px){ .ln-sum { grid-template-columns:24px 1fr; } .ln-sum > :nth-child(3), .ln-sum > :nth-child(4) { grid-column:2; } }
+  .nhead { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
+  .nhead .ttl { font-size:16px; font-weight:800; }
+  .nform { display:grid; grid-template-columns:1.4fr 1.2fr 0.9fr 0.9fr 1fr; gap:10px; }
+  .nform label { display:block; font-size:11.5px; color:#71717a; margin-bottom:3px; }
+  .nform input, .nform select { width:100%; height:36px; padding:6px 9px; border:1px solid #d4d4d8; border-radius:6px; font:inherit; font-size:13px; background:#fff; }
+  .nform .hint { font-size:11px; color:#a1a1aa; margin-top:2px; }
+  .nstat { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:10px; }
+  .nstat .recon { margin:0; padding:6px 12px; font-size:13px; }
+  .nstat .steps { margin:0; }
+  @media (max-width:800px){ .nform { grid-template-columns:1fr 1fr; } }
+  .sheetwrap { overflow:auto; max-height:70vh; border:1px solid #e4e4e7; border-radius:10px; background:#fff; }
+  table.ws { border-collapse:separate; border-spacing:0; width:max-content; min-width:100%; border:0; border-radius:0; overflow:visible; }
+  table.ws th { position:sticky; top:0; z-index:2; background:#4b5e7a; color:#fff; font-size:11.5px; padding:6px 6px; white-space:nowrap; text-align:left; }
+  table.ws td { padding:3px 4px; border-bottom:1px solid #eef0f3; border-right:1px solid #f3f4f6; font-size:12.5px; vertical-align:top; background:#fff; }
+  table.ws td input, table.ws td select { font-size:12.5px; padding:4px 5px; border:1px solid #e1e4e8; border-radius:4px; background:#fff; }
+  table.ws td input:focus, table.ws td select:focus { outline:2px solid #4b5e7a; }
+  table.ws .stk1 { position:sticky; left:0; z-index:1; width:46px; min-width:46px; max-width:46px; box-sizing:border-box; }
+  table.ws .stk2 { position:sticky; left:46px; z-index:1; box-shadow:2px 0 0 #e4e4e7; }
+  table.ws th.stk1, table.ws th.stk2 { z-index:3; }
+  table.ws tr.r-Restock td.stk1 { border-left:5px solid #6aa84f; } table.ws tr.r-Ragu td.stk1 { border-left:5px solid #e69138; } table.ws tr.r-Baru td.stk1 { border-left:5px solid #4b5e7a; }
+  table.ws .num { text-align:right; white-space:nowrap; }
+  table.ws input.miss, table.ws select.miss { background:#fde2e2; border-color:#f3a5a5; }
+  table.ws td.upc { background:#fde2e2; color:#b42318; font-weight:700; }
+  table.ws .w180{width:180px} table.ws .w40{width:40px} .w60{width:60px} .w80{width:80px} .w100{width:100px} .w130{width:130px} .w220{width:220px}
+  .sm { font-size:11px; color:#71717a; }
+  .warn2 { color:#b45309; font-size:12px; font-weight:700; white-space:nowrap; }
+  table.ws td.mgw { color:#b45309; font-weight:700; } table.ws input.wrn { background:#fff4e0; border-color:#f0b35a; }
+  .guide { border:2px solid #4b5e7a; } .guide ol { margin:6px 0 0 0; padding-left:0; list-style:none; }
+  .guide li { display:flex; gap:10px; padding:8px 4px; border-bottom:1px solid #f0f0f2; align-items:flex-start; }
+  .guide li.skip { opacity:.45; } .guide li.done .gt { text-decoration:line-through; color:#71717a; }
+  .guide .gn { min-width:26px; height:26px; border-radius:50%; background:#4b5e7a; color:#fff; font-weight:800; display:flex; align-items:center; justify-content:center; font-size:12px; }
+  .guide li.done .gn { background:#6aa84f; } .guide .gt b { display:block; margin-bottom:2px; } .guide .gd { font-size:12.5px; color:#3f3f46; line-height:1.55; }
+  details.help summary { cursor:pointer; font-weight:700; } details.help ol { line-height:1.7; font-size:13px; }
+  .sync { border:2px solid #e69138; }
+  .sync table td, .sync table th { font-size:12.5px; }
+  .sync .pk label { margin-right:10px; white-space:nowrap; cursor:pointer; }
+  table.ws th.pr { background:#6b5a3e; } table.ws td.pr { background:#fffaf2; }
+  table.ws td.pr.upc { background:#fde2e2; } table.ws td.mgb { color:#b42318; font-weight:700; } table.ws td.mgo { color:#3b6d2a; font-weight:700; }
+  table.ws td.lama { color:#71717a; }
+  .owner { background:#fff7e6; border:1px dashed #e69138; border-radius:8px; padding:8px; margin-top:8px; }
+  .guide2 { border:2px solid #4b5e7a; padding:14px 16px; }
+  .g2hd { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:flex-start; margin-bottom:4px; }
+  .g2hd b { font-size:15px; } .g2prog { display:flex; align-items:center; gap:8px; min-width:200px; font-size:12px; color:#71717a; }
+  ol.g2 > li { padding:9px 0 10px 46px; } ol.g2 > li.skip { opacity:.5; } ol.g2 > li.skip .num { border-style:dashed; }
+  ol.g2 > li.cur .num { background:#4b5e7a; color:#fff; box-shadow:0 0 0 4px #e0e7f1; }
+  ol.g2 > li.cur { background:linear-gradient(90deg,#f5f7fa,transparent); border-radius:0 8px 8px 0; }
+  .g2t { cursor:pointer; } .g2t .car { color:#a1a1aa; font-size:11px; }
+  ol.g2 > li.done .g2t { color:#71717a; text-decoration:line-through; text-decoration-color:#c4c4c8; }
+  .g2chip { font-size:11px; font-weight:700; padding:2px 8px; border-radius:10px; background:#eef1f5; color:#4b5e7a; white-space:nowrap; }
+  .g2chip.sh { background:#e8f5e9; color:#2e7d32; } .g2chip.now { background:#4b5e7a; color:#fff; } .g2chip.mut { background:transparent; color:#a1a1aa; font-weight:600; }
+  .crumb { display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin:4px 0 6px; font-size:12px; }
+  .crumb span { background:#27303f; color:#fff; padding:3px 9px; border-radius:6px; font-weight:700; } .crumb i { color:#a1a1aa; font-style:normal; }
+  ol.g2items { margin:4px 0 0; padding-left:20px; font-size:13px; line-height:1.6; } ol.g2items li { margin:2px 0; padding-left:2px; }
+  .bbox { border:1.5px dashed #7e22ce; background:#fdfaff; border-radius:10px; padding:10px 12px; margin-bottom:10px; }
+  .bbox .chk label { font-size:12.5px; color:#3f3f46; display:flex; gap:6px; align-items:center; }
+  .seg2 { display:flex; gap:6px; flex-wrap:wrap; align-items:center; font-size:12.5px; font-weight:700; color:#3f3f46; text-transform:none; letter-spacing:0; }
+  .seg2 button { background:#fff; color:#4b5e7a; border:1.5px solid #c9d2de; padding:6px 12px; } .seg2 button.on { background:#4b5e7a; color:#fff; border-color:#4b5e7a; }
+  .seg2 .sub { width:100%; font-weight:400; }
+  .pnote { font-size:12px; font-weight:700; color:#6b21a8; background:#f7f0ff; border-radius:8px; padding:6px 9px; }
+  details.ownerbox { padding:0; } details.ownerbox > summary { list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:14px 16px; }
+  details.ownerbox > summary::-webkit-details-marker { display:none; }
+  details.ownerbox > summary b { font-size:15px; } details.ownerbox > summary .car2 { margin-left:auto; color:#7e22ce; font-weight:800; transition:.15s; }
+  details.ownerbox[open] > summary .car2 { transform:rotate(90deg); } details.ownerbox[open] > summary { border-bottom:1px solid #efe4fb; }
+  .ownin { padding:12px 16px 16px; }
+  .nlist { display:flex; flex-direction:column; gap:8px; }
+  .nrow { display:grid; grid-template-columns:4px 1.6fr 1fr 1.6fr auto; gap:14px; align-items:center; border:1px solid #ececf0; border-radius:12px; padding:10px 14px 10px 0; background:#fff; transition:.12s; }
+  .nrow:hover { border-color:#c9d2de; box-shadow:0 3px 10px rgba(39,48,63,.06); }
+  .nrow .nbar { width:4px; align-self:stretch; min-height:44px; border-radius:0 4px 4px 0; background:#c9d2de; }
+  .nrow.s-Draft .nbar { background:#94a3b8; } .nrow.s-Menunggu .nbar { background:#f59e0b; } .nrow.s-File .nbar { background:#3b82f6; } .nrow.s-Selesai .nbar { background:#6aa84f; }
+  .nv b { font-size:14px; display:block; } .nv span { font-size:12px; color:#71717a; }
+  .nnext { font-size:12.5px; color:#3f3f46; } .nnext .who { font-weight:800; }
+  .nact { display:flex; gap:6px; align-items:center; } .nact a.ic, .nact button.ic { all:unset; cursor:pointer; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; border:1px solid #e4e4e7; font-size:15px; }
+  .nact a.ic:hover, .nact button.ic:hover { background:#f4f4f5; }
+  .nmore { all:unset; cursor:pointer; font-size:12.5px; font-weight:700; color:#4b5e7a; margin-top:4px; }
+  @media (max-width:760px){ .nrow { grid-template-columns:4px 1fr auto; } .nrow .nst, .nrow .nnext { grid-column:2; } }
+  /* ---------- halaman awal barang masuk ---------- */
+  .hero2 { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:flex-end; margin:4px 0 14px; }
+  .hero2 .h1 { font-size:22px; font-weight:800; color:#27303f; margin-bottom:4px; }
+  .hero2 .sub { max-width:640px; line-height:1.6; font-size:13px; }
+  .role { display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.6px; padding:2px 8px; border-radius:10px; vertical-align:1px; }
+  .r-own { background:#f3e8ff; color:#6b21a8; } .r-st { background:#dff4ef; color:#0f766e; }
+  .kpis { display:flex; gap:8px; flex-wrap:wrap; }
+  .kpi { background:#fff; border:1px solid #e4e4e7; border-radius:10px; padding:8px 14px; min-width:110px; }
+  .kpi b { display:block; font-size:20px; } .kpi span { font-size:11.5px; color:#71717a; }
+  .kpi.wait b { color:#b45309; } .kpi.go b { color:#4b5e7a; }
+  .paths { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+  .path { all:unset; box-sizing:border-box; cursor:pointer; background:#fff; border:2px solid #e4e4e7; border-radius:14px; padding:16px 18px;
+          display:flex; flex-direction:column; gap:6px; transition:.15s; color:#27303f; }
+  .path:hover { border-color:#4b5e7a; box-shadow:0 6px 18px rgba(75,94,122,.12); transform:translateY(-1px); }
+  .path.on { border-color:#4b5e7a; background:#f5f7fa; box-shadow:0 6px 18px rgba(75,94,122,.15); }
+  .path .pi { font-size:26px; color:#71717a; } .path .pt { font-size:16px; font-weight:800; } .path .pd { font-size:12.5px; color:#52525b; line-height:1.5; }
+  .path .pgo { margin-top:4px; font-weight:800; color:#4b5e7a; font-size:13px; }
+  @media (max-width:760px){ .paths { grid-template-columns:1fr; } }
+  .flowcard { border:2px solid #4b5e7a; padding:16px 18px; }
+  .flowhd { display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+  .ft2 { font-size:17px; font-weight:800; }
+  .prog { display:flex; align-items:center; gap:10px; margin:10px 0 6px; font-size:12px; color:#71717a; }
+  .bar2 { flex:1; height:6px; background:#eef1f5; border-radius:6px; overflow:hidden; } .bar2 i { display:block; height:100%; width:0; background:#6aa84f; transition:.25s; }
+  ol.flow { list-style:none; margin:8px 0 0; padding:0; counter-reset:f; }
+  ol.flow > li { position:relative; padding:12px 0 14px 46px; border-left:2px solid #e4e4e7; margin-left:15px; }
+  ol.flow > li:last-child { border-left-color:transparent; }
+  ol.flow > li .num { position:absolute; left:-16px; top:10px; width:30px; height:30px; border-radius:50%; background:#fff; border:2px solid #4b5e7a; color:#4b5e7a;
+          font-weight:800; display:flex; align-items:center; justify-content:center; font-size:13px; }
+  ol.flow > li.own .num { border-color:#7e22ce; color:#7e22ce; }
+  ol.flow > li.done .num { background:#6aa84f; border-color:#6aa84f; color:#fff; }
+  ol.flow > li.sect { padding:6px 0 6px 46px; border-left-style:dashed; }
+  ol.flow > li.sect .sectt { font-size:11.5px; font-weight:800; letter-spacing:.8px; color:#71717a; text-transform:uppercase; }
+  .stt { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-weight:800; font-size:14px; }
+  .stt .ck { margin-left:auto; font-weight:600; font-size:12px; color:#52525b; cursor:pointer; white-space:nowrap; }
+  ol.flow > li.done .stt .tt { color:#71717a; }
+  .sd { font-size:13px; color:#3f3f46; line-height:1.6; margin-top:4px; }
+  .sd ul { margin:4px 0 0; padding-left:18px; } .sd li { margin:2px 0; }
+  .tip { background:#f5f7fa; border-radius:8px; padding:7px 10px; font-size:12.5px; color:#3f3f46; margin-top:6px; }
+  .tip.warn { background:#fff4e0; color:#7c4a03; }
+  .pbtns { display:flex; gap:8px; flex-wrap:wrap; margin-top:8px; }
+  .pbtn { all:unset; cursor:pointer; border:1.5px solid #4b5e7a; border-radius:10px; padding:8px 12px; font-size:12.5px; color:#27303f; background:#fff; }
+  .pbtn b { display:block; color:#4b5e7a; font-size:13px; } .pbtn.rec { background:#4b5e7a; color:#e8edf3; } .pbtn.rec b { color:#fff; }
+  .chk { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px; }
+  .chk input { padding:7px 9px; border:1px solid #d4d4d8; border-radius:6px; font:inherit; font-size:13px; }
+  .okt { color:#3b6d2a; font-weight:700; font-size:12.5px; } .bad { color:#b42318; font-weight:700; font-size:12.5px; }
+  .sechd { display:flex; align-items:baseline; gap:10px; flex-wrap:wrap; margin-bottom:8px; } .sechd b { font-size:15px; }
+  .ownerbox { border:1.5px solid #e9d5ff; background:#fdfaff; }
+  .otabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .otabs button { background:#fff; color:#6b21a8; border:1px solid #e9d5ff; } .otabs button.on { background:#7e22ce; color:#fff; border-color:#7e22ce; }
+  .opane .when { background:#fff; border-left:4px solid #7e22ce; padding:8px 12px; border-radius:6px; font-size:12.5px; margin-bottom:8px; line-height:1.55; }
+  ol.mini { font-size:13px; line-height:1.65; margin:0 0 8px; padding-left:20px; }
+  .act { margin-top:8px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+  .pill2 { font-size:11.5px; padding:2px 9px; border-radius:10px; font-weight:700; white-space:nowrap; }
+  .s-Draft { background:#eef1f5; color:#4b5e7a; } .s-Menunggu { background:#fff4e0; color:#b45309; }
+  .s-File { background:#e0ecff; color:#1d4ed8; } .s-Selesai { background:#e2efda; color:#3b6d2a; }
+  .nt td { vertical-align:middle; } .nt .nx { font-size:11.5px; color:#71717a; }
+  .g2end { display:flex; gap:10px; align-items:center; flex-wrap:wrap; border-top:1px solid #f0f0f2; margin-top:6px; padding-top:12px; }
+  .lblban { display:flex; gap:12px; align-items:center; border:1.5px solid #f0b35a; background:#fff8ec; }
+  .lblban .lbi { font-size:22px; color:#71717a; } .lblban > div { flex:1; }
+  .nv .nbr { display:flex; flex-wrap:wrap; gap:4px; margin:3px 0 2px; }
+  .nv .nbr span { background:#f3e8ff; color:#6b21a8; font-size:11.5px; font-weight:700; padding:1px 8px; border-radius:10px; }
+  table.ws td textarea { display:block; font:inherit; font-size:12.5px; line-height:1.35; padding:4px 5px; border:1px solid #e1e4e8; border-radius:4px;
+    background:#fff; resize:vertical; min-height:46px; field-sizing:content; box-sizing:border-box; }
+  table.ws td textarea:focus { outline:2px solid #4b5e7a; } table.ws textarea.miss { background:#fde2e2; border-color:#f3a5a5; }
+  .kand { display:flex; flex-direction:column; gap:3px; margin-top:4px; width:240px; }
+  .kc { border:1px solid #e1e4e8; border-radius:6px; padding:4px 7px; font-size:12px; line-height:1.35; cursor:pointer; background:#fff; white-space:normal; }
+  .kc:hover { border-color:#4b5e7a; background:#f5f7fa; } .kc.on { border-color:#6aa84f; background:#e2efda; font-weight:700; }
+</style>
+
+<div id="bmList">
+  <div class="hero2">
+    <div>
+      <div class="h1">📦 Barang Masuk</div>
+      <div class="sub">Pilih jenis barang yang datang, lalu ikuti langkahnya dari atas ke bawah.
+        Langkah bertanda <span class="role r-own">🔒 PEMILIK</span> hanya bisa dikerjakan pemilik (perlu PIN).</div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center"><div class="kpis" id="bmKpi"></div>
+      <button class="sec" onclick="bmInit()" title="Muat ulang dari Master Data">↻</button></div>
+  </div>
+
+  <div class="paths">
+    <button class="path" id="pLama" onclick="bmPath('lama')">
+      <span class="pi">🔁</span>
+      <span class="pt">Brand sudah ada</span>
+      <span class="pd">Restock, atau produk baru dari brand <b>dan</b> distributor yang sudah pernah masuk sistem.</span>
+      <span class="pgo">Mulai →</span>
+    </button>
+    <button class="path" id="pBaru" onclick="bmPath('baru')">
+      <span class="pi">✨</span>
+      <span class="pt">Brand / distributor baru</span>
+      <span class="pd">Pertama kali beli dari distributor ini, atau brandnya belum ada di sistem.</span>
+      <span class="pnote">🔒 Hubungi pemilik dulu untuk memastikan price list, vendor &amp; brand sudah disiapkan.</span>
+      <span class="pgo">Mulai →</span>
+    </button>
+  </div>
+
+  <div id="bmFlow" class="card flowcard" style="display:none">
+    <div class="flowhd"><div><div class="ft2" id="bmFlowTtl"></div><div class="sub" id="bmFlowSub"></div></div>
+      <button class="sec" onclick="bmPath('')">✕ Tutup</button></div>
+    <ol class="flow" id="bmFlowSteps"></ol>
+  </div>
+
+  <div id="bmLabelBan"></div>
+
+  <div class="card notacard">
+    <div class="sechd"><b>🧾 Nota</b><span class="sub">Nota yang sedang berjalan. Klik <b>Buka</b> untuk melanjutkan.</span></div>
+    <div id="bmNotas">Memuat…</div>
+  </div>
+
+  <details class="card ownerbox" id="bmOwnerBox">
+    <summary><span class="role r-own">🔒 PEMILIK</span><b>Persiapan &amp; perawatan data</b><span class="sub">Price list vendor · Sinkron ID aturan · Pengaturan</span><span class="car2">▸</span></summary>
+    <div class="ownin">
+    <div class="otabs">
+      <button class="on" onclick="bmOTab('pl',this)">📒 Price list vendor</button>
+      <button onclick="bmOTab('rule',this)">🔗 Sinkron ID aturan pricelist</button>
+      <button onclick="bmOTab('set',this)">⚙️ Pengaturan aktif</button>
+    </div>
+    <div id="ot-pl" class="opane">
+      <div class="when">Kapan: sebelum barang dari <b>distributor baru</b> datang, atau saat distributor mengirim <b>price list terbaru</b>. Gunanya: HET produk baru terisi otomatis.</div>
+      <ol class="mini">
+        <li>Klik <a href="#" onclick="bmCopyPrompt('PL');return false"><b>📋 Salin prompt price list</b></a>.</li>
+        <li>Buka Claude / Gemini → tempel prompt → <b>ganti baris VENDOR</b> (nama persis seperti di Odoo) dan <b>CATATAN</b> (aturan khusus, mis. harga per lusin) → lampirkan foto/PDF katalog → kirim.</li>
+        <li>Cek catatan AI (baris yang ragu) → salin isi tabel → tempel di bawah → <b>Simpan</b>. Produk yang sudah ada diperbarui, sisanya ditambahkan.</li>
+      </ol>
+      <textarea id="bmPLPaste" rows="5" style="width:100%;font-family:ui-monospace,Menlo,monospace;font-size:12px;padding:10px;border:1px solid #d4d4d8;border-radius:8px;background:#fcfcfd" placeholder="Vendor&#9;Nama di Price List&#9;HNT&#9;HET&#9;Sumber"></textarea>
+      <div class="act"><button onclick="bmSavePL()">💾 Simpan ke Price List</button> <span class="info" id="bmPLSt"></span></div>
+    </div>
+    <div id="ot-rule" class="opane" style="display:none">
+      <div class="when">Kapan: setelah nota berisi <b>produk baru</b> / <b>brand baru</b> selesai di-import ke Odoo. Gunanya: perubahan harga berikutnya bisa lewat file import, bukan diketik manual di pricelist.</div>
+      <ol class="mini">
+        <li>Odoo → POS → Produk → <b>Daftar Harga</b> → centang <b>Harga Aura</b> → ⚙ <b>Ekspor</b>.</li>
+        <li>Centang <b>"Saya ingin memperbarui data (kompatibel impor)"</b>. Kolom: <b>ID Eksternal</b>, <b>Peraturan Daftar Harga / ID Eksternal</b>, <b>Peraturan Daftar Harga / Produk / ID Eksternal</b> → Ekspor.</li>
+        <li>Buka file hasil export → blok semua isi <b>termasuk judul kolom</b> → Copy → tempel di bawah → <b>Sinkronkan</b>.</li>
+      </ol>
+      <textarea id="bmRulePaste" rows="5" style="width:100%;font-family:ui-monospace,Menlo,monospace;font-size:12px;padding:10px;border:1px solid #d4d4d8;border-radius:8px;background:#fcfcfd" placeholder="id&#9;item_ids/id&#9;item_ids/product_tmpl_id/id"></textarea>
+      <div class="act"><button onclick="bmSyncRules()">🔗 Sinkronkan ID aturan</button></div>
+    </div>
+    <div id="ot-set" class="opane" style="display:none"><div id="bmSetInfo" class="info2"></div></div>
+    </div>
+  </details>
+</div>
+
+<div id="bmEdit" style="display:none"></div>
+
+<script>
+  var BMI = null, CUR = null, OWNER_PIN = '', BM_FILES = [], OPEN = {}, EDITNUM = {};
+  function bmEsc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+  function bmRp(n){ return n === '' || n == null || isNaN(n) ? '-' : 'Rp ' + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.'); }
+  function bmNum(v){ if (typeof v === 'number') return v; var s=String(v||'').replace(/\s/g,''); if (/,\d{1,2}$/.test(s)) s=s.replace(/\./g,'').replace(',','.'); else s=s.replace(/,/g,''); var n=parseFloat(s); return isNaN(n)?0:n; }
+  function bmToast(m){ var t=document.getElementById('toast'); t.textContent=m; t.style.display='block'; clearTimeout(t._h); t._h=setTimeout(function(){t.style.display='none';},5000); }
+  function bmFail(e){
+    var m = e && e.message ? e.message : String(e);
+    if (/\n/.test(m)) UI.alert({ icon:'⚠️', tone:'warn', title:'Belum bisa diproses', html: bmEsc(m).replace(/\n/g, '<br>') });
+    else bmToast('❌ ' + m);
+    var b=document.getElementById('bmRead'); if(b) b.disabled=false;
+  }
+
+  function bmInit(cb){
+    GS.run.withBusy('Memuat Master Data…', true).withSuccessHandler(function(r){
+      BMI = r; BMI.pmap = {}; r.products.forEach(function(p){ BMI.pmap[p.sku] = p; });
+      var dl = '<datalist id="dlProd">' + r.products.map(function(p){ return '<option value="'+bmEsc(p.sku)+'">'+bmEsc(p.nama)+'</option>'; }).join('') + '</datalist>'
+             + '<datalist id="dlBrand">' + Object.keys(r.prefix).sort().map(function(b){ return '<option value="'+bmEsc(b)+'">'; }).join('') + '</datalist>';
+      var holder = document.getElementById('bmDl') || document.body.appendChild(Object.assign(document.createElement('div'),{id:'bmDl'}));
+      holder.innerHTML = dl;
+      bmDrawList(); if (cb) cb();                      // banner label memakai BMI.labelPerlu dari server
+    }).withFailureHandler(bmFail).bm_init();
+  }
+  function bmDrawList(){
+    var n = BMI.notas, cnt = { Draft:0, Menunggu:0, File:0 };
+    n.forEach(function(x){ if (x.status==='Draft') cnt.Draft++; else if (/^Menunggu/.test(x.status)) cnt.Menunggu++; else if (x.status==='File Dibuat') cnt.File++; });
+    document.getElementById('bmKpi').innerHTML =
+        '<div class="kpi"><b>'+cnt.Draft+'</b><span>Draft (staf)</span></div>'
+      + '<div class="kpi wait"><b>'+cnt.Menunggu+'</b><span>Menunggu pemilik</span></div>'
+      + '<div class="kpi go"><b>'+cnt.File+'</b><span>Siap import Odoo</span></div>';
+    var next = { 'Draft':['Staf','lengkapi tabel → Kirim'], 'Menunggu Persetujuan':['🔒 Pemilik','Mode pemilik → Setujui'],
+                 'File Dibuat':['Staf','import ke Odoo (ikuti panduan)'], 'Selesai':['','selesai'] };
+    var aktif = n.filter(function(x){ return x.status !== 'Selesai'; }), done = n.filter(function(x){ return x.status === 'Selesai'; });
+    var pre2b = {}; Object.keys(BMI.prefix || {}).forEach(function(b){ pre2b[BMI.prefix[b]] = b; });
+    var row = function(x){
+      var k = String(x.status).split(' ')[0], nx = next[x.status] || ['',''], pg = '';
+      var bl = (x.brands || []).map(function(b){ return pre2b[b] || b; })
+        .filter(function(b, i, a){ return b && a.indexOf(b) === i; });
+      if (x.status === 'File Dibuat') {
+        var P = bmProg(x.fileInfo, x.langkah);
+        nx = ['Staf', P.next ? 'berikutnya: <b>' + P.next.t + '</b>' : 'semua langkah selesai → tandai selesai'];
+        pg = '<div class="g2prog" style="min-width:0;margin-top:4px"><div class="bar2"><i style="width:' + Math.round(P.done/Math.max(1,P.total)*100) + '%"></i></div><span>' + P.done + ' / ' + P.total + ' langkah</span></div>';
+      }
+      return '<div class="nrow s-'+k+'"><span class="nbar"></span>'
+        + '<div class="nv"><b>'+bmEsc(x.vendor||'(vendor belum diisi)')+'</b>'
+        + (bl.length ? '<div class="nbr">' + bl.map(function(b){ return '<span>'+bmEsc(b)+'</span>'; }).join('') + '</div>' : '')
+        + '<span>'+bmEsc(x.no||'tanpa no faktur')+' · '+bmEsc(x.diubah)+'</span></div>'
+        + '<div class="nst"><span class="pill2 s-'+k+'">'+bmEsc(x.status)+'</span></div>'
+        + '<div class="nnext">'+(nx[0] ? '<span class="who">'+nx[0]+':</span> ' : '')+nx[1]+pg+'</div>'
+        + '<div class="nact">'
+        + (x.file ? '<a class="ic" href="'+bmEsc(x.file)+'" target="_blank" title="Buka file import">📄</a>' : '')
+        + (x.status==='Draft' || x.status==='Menunggu Persetujuan' ? '<button class="ic" title="Hapus nota" onclick="bmDelete(\''+bmEsc(x.id)+'\')">🗑</button>' : '')
+        + '<button onclick="bmOpen(\''+bmEsc(x.id)+'\')">Buka</button></div></div>';
+    };
+    document.getElementById('bmNotas').innerHTML =
+        (aktif.length ? '<div class="nlist">' + aktif.map(row).join('') + '</div>' : '<div class="sub">Tidak ada nota yang sedang berjalan. Pilih jenis barang di atas untuk mulai.</div>')
+      + (done.length ? '<details style="margin-top:8px"><summary class="nmore">✓ '+done.length+' nota selesai</summary><div class="nlist" style="margin-top:8px">' + done.map(row).join('') + '</div></details>' : '');
+    var s = BMI.settings || {};
+    document.getElementById('bmSetInfo').innerHTML =
+        '<table><tr><th>Pengaturan</th><th>Nilai</th><th>Artinya</th></tr>'
+      + '<tr><td>Brand pakai Harga Aura</td><td><b>'+bmEsc((s.brandPL||[]).join(', ')||'-')+'</b></td><td>Harga jual brand ini diatur lewat pricelist Harga Aura. Brand lain masih HET + promo lama. Brand baru otomatis ditambahkan saat nota disetujui.</td></tr>'
+      + '<tr><td>Aturan harga jual</td><td><b>maks(modal × '+(1+(s.margin||0)).toFixed(2)+', modal + '+bmRp(s.min)+')</b>, dibulatkan ke '+bmRp(s.round)+', maks HET</td><td>Dipakai untuk kolom Saran.</td></tr>'
+      + '<tr><td>Tanggal penghapusan lot</td><td><b>'+(s.bulanHapus||0)+' bulan</b> sebelum ED</td><td>Diisi otomatis di sheet Import Lot.</td></tr>'
+      + '</table><div class="sub" style="margin-top:6px">Ubah nilai di tab <b>Pengaturan</b> pada Master Data, lalu muat ulang halaman ini.</div>';
+    bmLabelBanner();
+    if (BM_PATH) bmDrawFlow();
+  }
+
+  /* ---------- alur langkah: brand lama / brand baru ---------- */
+  var BM_PATH = '', BM_DONE = {}, BM_SUB = 'keduanya';   // brand | distributor | keduanya
+  function bmSub(v){ BM_SUB = v; bmDrawFlow(true); }
+  function bmOTab(k, el){
+    ['pl','rule','set'].forEach(function(x){ document.getElementById('ot-'+x).style.display = x===k ? '' : 'none'; });
+    [].forEach.call(el.parentNode.children, function(b){ b.className = b===el ? 'on' : ''; });
+  }
+  function bmPath(p){
+    BM_PATH = p;
+    document.getElementById('pLama').className = 'path' + (p==='lama' ? ' on' : '');
+    document.getElementById('pBaru').className = 'path' + (p==='baru' ? ' on' : '');
+    document.getElementById('bmFlow').style.display = p ? '' : 'none';
+    if (p) { bmDrawFlow(); document.getElementById('bmFlow').scrollIntoView({ behavior:'smooth', block:'start' }); }
+  }
+  function bmTick(k, v){ BM_DONE[BM_PATH + ':' + k] = v; bmDrawFlow(true); }
+  function bmFlowDef(p){
+    var S = [], own = function(k,t,d){ S.push({k:k,r:'own',t:t,d:d}); }, st = function(k,t,d){ S.push({k:k,r:'st',t:t,d:d}); }, sec = function(t){ S.push({sec:t}); };
+    var promptBtns = '<div class="pbtns">'
+      + '<button class="pbtn rec" onclick="bmCopyPrompt(\'B\')"><b>📋 Prompt B — disarankan</b>foto nota + foto kemasan (barcode & ED ikut terbaca)</button>'
+      + '<button class="pbtn" onclick="bmCopyPrompt(\'A\')"><b>📋 Prompt A</b>foto nota saja (barcode & ED diisi manual)</button></div>';
+    var brandBaru = p === 'baru' && BM_SUB !== 'distributor', distBaru = p === 'baru' && BM_SUB !== 'brand';
+    if (p === 'baru') {
+      sec('🔒 Persiapan oleh pemilik — pastikan selesai sebelum staf mulai');
+      own('pl', distBaru ? 'Masukkan price list distributor (disarankan)' : 'Pastikan price list brand ini sudah ada (disarankan)',
+        'Buka <b>🔒 Persiapan &amp; perawatan data → 📒 Price list vendor</b> di bagian bawah halaman, ikuti 3 langkahnya. Dengan price list, HET produk baru terisi otomatis; tanpa itu HET harus diketik satu per satu.'
+        + '<div class="tip">Belum punya price list? Lewati — HET bisa diisi manual saat menyetujui nota.</div>');
+      if (distBaru) own('vendor', 'Buat data vendor di Odoo',
+        '<ul><li>Odoo → <b>Purchase → Order → Vendor</b> → <b>Baru</b> → pilih <b>Perusahaan</b>.</li>'
+        + '<li>Nama: tulis lengkap, mis. <i>PT Moga Djaja</i>. <b>Nama ini harus sama persis</b> dengan yang nanti diketik di nota — dipakai saat import PO.</li><li>Simpan.</li></ul>'
+        + '<div class="chk">Cek nama vendor: <input id="bmCkV" list="dlVendor2" placeholder="ketik nama vendor" oninput="bmCekVendor()"><span id="bmCkVr"></span></div>');
+      if (brandBaru) own('kategori', 'Buat brand sebagai Kategori Produk di Odoo',
+        '<ul><li>Odoo → <b>Inventaris → Konfigurasi → Kategori Produk</b> → buka dulu kategori brand lain (mis. <i>Viva</i>) untuk melihat pengaturannya.</li>'
+        + '<li>Klik <b>Baru</b> → nama <b>persis</b> nama brand (mis. <i>Wardah</i>) → samakan Metode Biaya, Valuasi Inventaris, dan Strategi Penghapusan dengan kategori contoh → Simpan.</li></ul>'
+        + '<div class="tip">Satu kategori per brand. Bila satu nota berisi beberapa brand baru, buat semuanya.</div>');
+      sec('Saat barang datang');
+    } else sec('Saat barang datang');
+    st('fisik', 'Cek fisik barang',
+      '<ul><li>Cocokkan barang dengan nota: jumlah, bonus, varian/ukuran.</li>'
+      + '<li>Foto kemasan yang memperlihatkan <b>barcode</b> dan tulisan <b>EXP/ED</b> dengan jelas (satu foto boleh berisi beberapa produk).</li>'
+      + '<li>Bila satu produk punya 2 ED berbeda, pisahkan dan hitung jumlah per ED.</li></ul>');
+    st('ai', 'Baca nota dengan Claude / Gemini',
+      'Klik salah satu tombol untuk menyalin prompt:' + promptBtns
+      + '<ul style="margin-top:8px"><li>Buka claude.ai atau gemini.google.com → tempel prompt → lampirkan foto nota' + (p==='baru'?'':' (dan foto kemasan bila pakai Prompt B)') + (p==='baru'?' dan foto kemasan':'') + ' → kirim.</li>'
+      + '<li>Baca catatan AI di bawah tabel: <b>total hitungan harus sama dengan Total Nota</b>. Bila beda, minta AI memeriksa ulang baris yang ragu.</li>'
+      + '<li>Klik tombol <b>Copy</b> pada tabel hasil AI.</li></ul>');
+    st('tempel', 'Tempel tabel & klik Proses',
+      (brandBaru ? '<div class="bbox"><b>Brand baru di nota ini</b><div class="sub">Semua barang di nota otomatis dibuat sebagai produk <b>Baru</b> dengan brand &amp; prefix ini — tidak perlu diisi per baris.</div>'
+        + '<div class="chk"><label>Nama brand <input id="bmBBrand" placeholder="mis. Skintific" oninput="bmCekBrand()" style="width:200px"></label>'
+        + '<label>Prefix SKU <input id="bmBPre" maxlength="6" placeholder="mis. SKF" style="width:90px;text-transform:uppercase" oninput="bmCekBrand()"></label><span id="bmBRes"></span></div>'
+        + '<div class="sub">Nama brand harus sama persis dengan Kategori Produk yang dibuat pemilik di Odoo. Prefix: 2–6 huruf, SKU jadi PREFIX-0001, -0002, …</div></div>' : '')
+      + '<textarea id="bmPaste" rows="6" style="'+'%TA%'+'" placeholder="Tempel tabel dari Claude/Gemini di sini (termasuk baris judul)"></textarea>'
+      + '<div class="act"><button id="bmProc" onclick="bmPasteRead()">Proses ➜</button><span class="info" id="bmPasteSt"></span></div>'
+      + '<div class="tip">Setelah <b>Proses</b>, panduan ini tertutup dan nota terbuka di halamannya sendiri: lengkapi tabel → <b>Kirim</b> → (persetujuan pemilik bila perlu) → ikuti <b>🧭 Panduan langkah di Odoo</b>. Progres tiap nota terlihat di kartunya, dan label yang perlu dicetak muncul sebagai pengingat di atas daftar nota.</div>');
+    st('lengkapi', 'Lengkapi tabel nota',
+      '<ul><li>Isi semua <b style="color:#b42318">sel merah</b>. Kolom <b>Kurang</b> di ujung kanan menunjukkan apa yang belum lengkap.</li>'
+      + '<li><b>Ragu</b> → pilih SKU yang benar dari usulan, atau ubah ke Baru. <b>Baru</b> → nama lengkap + ukuran, brand, barcode, ED, HET (klik <b>↻ Isi HET dari price list</b>).</li>'
+      + (distBaru ? '<li><b>Vendor</b>: ketik nama persis seperti di Odoo (muncul tanda ⚠ Vendor baru — itu wajar).</li>' : '')
+      + (brandBaru ? '<li>Semua baris sudah berstatus <b>Baru</b> dengan brand &amp; prefix dari langkah sebelumnya. Rapikan <b>Nama produk</b> (lengkap + ukuran), lalu barcode, ED, HET seperti biasa.</li>' : '')
+      + '<li>Kotak total harus <b>hijau</b> (sama dengan nota). Barcode bertanda ⚠ = digit salah baca → scan ulang.</li></ul>');
+    st('kirim', 'Klik Kirim',
+      'Bila semua barang restock dan modal tidak naik → file import <b>langsung dibuat</b>. Bila ada produk baru atau modal naik → status <b>Menunggu Persetujuan</b>, beri tahu pemilik.');
+    own('setuju', 'Periksa & setujui nota',
+      '<ul><li>Buka nota di daftar <b>Nota</b> → <b>🔑 Mode pemilik</b> (PIN).</li>'
+      + '<li>Periksa kolom cokelat: <b>HET</b>, <b>Harga jual</b>, <b>Margin</b> (merah = rugi / di bawah aturan, oranye = di atas HET). Kosongkan Harga jual = pakai Saran.</li>'
+      + '<li>Klik <b>✅ Setujui & buat file import</b>.</li></ul>');
+    st('odoo', 'Masukkan ke Odoo',
+      'Buka nota → ikuti kotak <b>🧭 Panduan langkah di Odoo</b> (unduh file → import produk, harga, PO → import lot → terima barang → validasi). Centang tiap langkah di sana.'
+      + (p==='baru' ? '<div class="tip warn">Import Produk gagal "kategori tidak ditemukan" / Import PO gagal "vendor tidak ditemukan" → langkah persiapan pemilik belum dilakukan atau namanya tidak sama persis.</div>' : ''));
+    st('label', 'Tandai selesai & cetak label',
+      'Di halaman nota, centang semua langkah <b>🧭 Panduan langkah di Odoo</b> → konfirmasi <b>✓ Sudah masuk Odoo</b> → otomatis kembali ke halaman ini.'
+      + '<div class="pbtns"><button class="pbtn" onclick="bmToLabel()"><b>🏷 Buka Cetak Label</b>filter Perlu dicetak → Preview → Print → ✓ Tandai sudah dicetak</button></div>'
+      + '<div class="sub" style="margin-top:4px">Cetak label hanya perlu bila ada produk baru atau harga jual / HET yang berubah.</div>');
+    if (p === 'baru') own('sinkron', 'Sinkron ID aturan pricelist',
+      'Setelah semua di atas selesai: <b>🔒 Persiapan &amp; perawatan data → 🔗 Sinkron ID aturan pricelist</b>. Supaya perubahan harga brand ini nantinya bisa lewat file import.');
+    S = S.filter(function(s){ return ['lengkapi','kirim','setuju','odoo','label','sinkron'].indexOf(s.k) < 0; });   // sesudah Proses: dikerjakan di halaman nota
+    return S;
+  }
+  function bmDrawFlow(keepPaste){
+    var p = BM_PATH; if (!p) return;
+    var keep = keepPaste && document.getElementById('bmPaste') ? document.getElementById('bmPaste').value : '';
+    var kB = document.getElementById('bmBBrand') ? document.getElementById('bmBBrand').value : '', kP = document.getElementById('bmBPre') ? document.getElementById('bmBPre').value : '';
+    document.getElementById('bmFlowTtl').textContent = p==='baru' ? '✨ Brand / distributor baru' : '🔁 Brand sudah ada';
+    document.getElementById('bmFlowSub').innerHTML = p==='baru'
+      ? 'Pilih dulu apa yang baru. <b>Hubungi pemilik</b> untuk memastikan langkah bertanda 🔒 sudah selesai sebelum mulai.'
+      : 'Panduan sampai klik Proses. Setelah itu lanjut di halaman nota — progres tiap nota terlihat di kartunya di bawah.';
+    var S = bmFlowDef(p), no = 0, tot = 0, dn = 0;
+    var seg = p === 'baru' ? '<li class="sect"><div class="seg2">Yang baru: '
+      + [['brand','Brand saja'],['distributor','Distributor saja'],['keduanya','Brand & distributor']].map(function(o){
+          return '<button class="'+(BM_SUB===o[0]?'on':'')+'" onclick="bmSub(\''+o[0]+'\')">'+o[1]+'</button>'; }).join('')
+      + '<div class="sub" style="margin-top:4px">'+({brand:'Brand belum ada di sistem, tapi distributornya sudah pernah dipakai.',
+          distributor:'Distributor belum pernah dipakai, tapi brandnya sudah ada di sistem.', keduanya:'Brand dan distributor sama-sama belum ada di sistem.'})[BM_SUB]+'</div></div></li>' : '';
+    var h = S.map(function(s){
+      if (s.sec) return '<li class="sect"><span class="sectt">'+s.sec+'</span></li>';
+      no++;
+      return '<li class="'+(s.r==='own'?'own':'')+'"><span class="num">'+no+'</span>'
+        + '<div class="stt">'+(s.r==='own'?'<span class="role r-own">🔒 PEMILIK</span>':'')+'<span class="tt">'+s.t+'</span></div>'
+        + '<div class="sd">'+s.d.replace('%TA%', '__TA__')+'</div></li>';
+    }).join('');
+    document.getElementById('bmFlowSteps').innerHTML = seg + h.replace(/__TA__/g, BM_TA);
+    if (!document.getElementById('dlVendor2')) {
+      var dl = document.createElement('datalist'); dl.id = 'dlVendor2';
+      dl.innerHTML = (BMI.vendors||[]).map(function(v){ return '<option value="'+bmEsc(v)+'">'; }).join('');
+      document.body.appendChild(dl);
+    }
+    if (keep) document.getElementById('bmPaste').value = keep;
+    if (document.getElementById('bmBBrand')) { document.getElementById('bmBBrand').value = kB; document.getElementById('bmBPre').value = kP; if (kB || kP) bmCekBrand(); }
+  }
+  function bmCekBrand(){
+    var b = document.getElementById('bmBBrand').value.trim(), p = document.getElementById('bmBPre').value.trim().toUpperCase(), r = document.getElementById('bmBRes');
+    var ada = Object.keys(BMI.prefix).filter(function(k){ return k.toLowerCase() === b.toLowerCase(); })[0];
+    if (b && ada) { r.innerHTML = '<span class="bad">✗ Brand "'+bmEsc(ada)+'" sudah ada (prefix '+bmEsc(BMI.prefix[ada])+') — pakai "Distributor saja" / "Brand sudah ada"</span>'; return false; }
+    if (!p) { r.innerHTML = ''; return false; }
+    if (!/^[A-Z0-9]{2,6}$/.test(p)) { r.innerHTML = '<span class="bad">Prefix 2–6 huruf/angka</span>'; return false; }
+    var dip = bmPreClash(p, '\u0000');
+    r.innerHTML = dip ? '<span class="bad">✗ Prefix dipakai brand '+bmEsc(dip)+'</span>' : (b ? '<span class="okt">✓ Siap — SKU jadi '+p+'-0001, '+p+'-0002, …</span>' : '<span class="okt">✓ Prefix bebas</span>');
+    return !dip && !!b;
+  }
+  var BM_TA = 'width:100%;font-family:ui-monospace,Menlo,monospace;font-size:12px;padding:10px;border:1px solid #d4d4d8;border-radius:8px;background:#fcfcfd';
+  function bmCekVendor(){
+    var v = document.getElementById('bmCkV').value.trim(), r = document.getElementById('bmCkVr');
+    if (!v) { r.innerHTML = ''; return; }
+    var ada = (BMI.vendors||[]).filter(function(x){ return x.toLowerCase() === v.toLowerCase(); })[0];
+    r.innerHTML = ada ? '<span class="okt">✓ Sudah pernah dipakai di sistem: "'+bmEsc(ada)+'" — pakai brand-lama saja bila brandnya juga sudah ada</span>'
+                      : '<span class="bad">Baru — buat di Odoo dengan nama persis "'+bmEsc(v)+'"</span>';
+  }
+  function bmCekPrefix(){
+    var el = document.getElementById('bmCkP'), p = el.value.trim().toUpperCase(), r = document.getElementById('bmCkPr');
+    if (!p) { r.innerHTML = ''; return; }
+    if (!/^[A-Z0-9]{2,6}$/.test(p)) { r.innerHTML = '<span class="bad">2–6 huruf/angka</span>'; return; }
+    var dipakai = bmPreClash(p, '\u0000');
+    r.innerHTML = dipakai ? '<span class="bad">✗ Sudah dipakai brand '+bmEsc(dipakai)+'</span>' : '<span class="okt">✓ Bebas dipakai</span>';
+  }
+
+  /* ---------- upload & baca ---------- */
+  function bmShrink(file){
+    return new Promise(function(res, rej){
+      var fr = new FileReader();
+      fr.onerror = rej;
+      fr.onload = function(){
+        if (file.type === 'application/pdf') return res({ name:file.name, mime:file.type, data:fr.result.split(',')[1] });
+        var img = new Image();
+        img.onload = function(){
+          var max = 2200, s = Math.min(1, max / Math.max(img.width, img.height));
+          var cv = document.createElement('canvas'); cv.width = img.width*s; cv.height = img.height*s;
+          cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+          res({ name:file.name.replace(/\.\w+$/,'')+'.jpg', mime:'image/jpeg', data:cv.toDataURL('image/jpeg',0.85).split(',')[1] });
+        };
+        img.onerror = function(){ rej(new Error('Format foto tidak didukung (HEIC?). Ubah ke JPG dulu.')); };
+        img.src = fr.result;
+      };
+      fr.readAsDataURL(file);
+    });
+  }
+  // Beberapa foto = beberapa HALAMAN dari SATU nota. Nota berbeda diupload terpisah.
+  function bmAddFiles(inp){
+    [].slice.call(inp.files).forEach(function(f){ BM_FILES.push(f); });
+    inp.value = ''; bmDrawPrev();
+  }
+  function bmDrawPrev(){
+    var box = document.getElementById('bmPrev');
+    box.innerHTML = BM_FILES.map(function(f, i){
+      var u = /^image\//.test(f.type) ? URL.createObjectURL(f) : '';
+      return '<div class="thumb"><span class="x" onclick="bmRmFile('+i+')">×</span>'
+        + (u ? '<img src="'+u+'">' : '<div style="height:130px;line-height:130px">PDF</div>')
+        + '<div>Hal. '+(i+1)+'</div></div>';
+    }).join('') + (BM_FILES.length > 1 ? '<div class="info" style="align-self:center">'+BM_FILES.length+' foto dibaca sebagai <b>1 nota</b>, urut sesuai halaman.</div>' : '');
+  }
+  function bmRmFile(i){ BM_FILES.splice(i,1); bmDrawPrev(); }
+  function bmDelete(id){
+    UI.confirm({ icon:'🗑', tone:'danger', title:'Hapus nota ini?', html:'Nota <b>' + bmEsc(id) + '</b> beserta isinya akan dihapus dan tidak bisa dikembalikan.', ok:'Hapus', okClass:'danger' }).then(function(y){
+      if (!y) return;
+      GS.run.withBusy('Menghapus nota…').withSuccessHandler(function(){ bmToast('🗑 Nota dihapus'); if (CUR && CUR.id===id) bmBack(true); else bmInit(); })
+        .withFailureHandler(bmFail).bm_deleteNota(id);
+    });
+  }
+  function bmRead(){
+    var fs = BM_FILES;
+    if (!fs.length) return bmToast('Pilih foto nota dulu.');
+    document.getElementById('bmRead').disabled = true;
+    document.getElementById('bmReadSt').textContent = 'Menyiapkan foto…';
+    Promise.all([].slice.call(fs).map(bmShrink)).then(function(files){
+      document.getElementById('bmReadSt').textContent = 'Membaca nota dengan AI… (±10–40 detik)';
+      GS.run.withBusy('Membaca nota…').withSuccessHandler(function(r){
+        document.getElementById('bmRead').disabled = false; document.getElementById('bmReadSt').textContent = '';
+        BM_FILES = []; bmDrawPrev();
+        CUR = { id:r.id, status:'Draft', draft:r.draft }; bmShowEdit();
+      }).withFailureHandler(function(e){ document.getElementById('bmReadSt').textContent=''; bmFail(e); }).bm_readNota(files);
+    }).catch(bmFail);
+  }
+  function bmOpen(id){
+    GS.run.withBusy('Membuka nota…', true).withSuccessHandler(function(r){ CUR = r; bmShowEdit(); }).withFailureHandler(bmFail).bm_getNota(id);
+  }
+
+
+  /* ---------- tempel tabel (tanpa API AI) ---------- */
+  var BM_COLS = { vendor:'vendor', 'no faktur':'no_faktur', tanggal:'tanggal', 'ppn termasuk':'ppn_termasuk', 'ppn %':'ppn_persen',
+    'total nota':'total_nota', 'kode barang':'kode', 'nama barang':'nama', qty:'qty', bonus:'bonus', 'harga satuan':'harga', diskon:'diskon',
+    barcode:'barcode', ed:'ed', 'tanggal kedaluwarsa':'ed', 'ed (tgl kadaluarsa)':'ed' };
+  var BM_HEAD = 'Vendor\tNo Faktur\tTanggal\tPPN Termasuk\tPPN %\tTotal Nota\tKode Barang\tNama Barang\tQty\tBonus\tHarga Satuan\tDiskon\tBarcode\tED';
+  var BM_RULES = [
+    'Aturan umum:',
+    '- Satu baris per barang di nota. Vendor, No Faktur, Tanggal, PPN Termasuk, PPN %, Total Nota cukup diisi di baris pertama.',
+    '- Tanggal format YYYY-MM-DD. Angka tanpa pemisah ribuan dan tanpa "Rp" (contoh 17100 atau 16590.42).',
+    '- Qty = jumlah dibayar; Bonus = jumlah gratis (0 bila tidak ada). Barang bonus Rp0 digabung ke kolom Bonus barang yang sama.',
+    '- Harga Satuan = harga per pcs SEBELUM diskon. Diskon persen ditulis berurutan dengan tanda +, contoh 2+1 untuk 2%+1%. Diskon berupa rupiah ditulis PER PCS dengan awalan Rp, contoh Rp267 (bila di faktur potongan per baris, bagi dulu dengan Qty). Kosongkan bila tidak ada.',
+    '- Diskon di BAWAH faktur yang berlaku untuk semua barang (mis. "Disc 3%", "Potongan Rp50.000", cash discount): tambahkan ke kolom Diskon SETIAP baris sebagai persen berurutan setelah diskon baris, contoh 2+3. Bila berupa rupiah, ubah dulu ke persen = potongan ÷ subtotal setelah diskon baris × 100 (4 angka desimal).',
+    '- Ongkir, materai, atau biaya lain di bawah faktur: JANGAN dimasukkan ke harga barang; sebutkan nominalnya di catatan setelah tabel (Total Nota tetap ditulis sesuai faktur).',
+    '- Bila harga di nota per lusin/pak, ubah Qty ke pcs dan Harga Satuan ke per pcs (sebutkan di catatan di luar tabel).',
+    '- PPN Termasuk = Ya bila harga di nota sudah termasuk PPN (total = DPP + PPN tanpa tambahan); Tidak bila PPN ditambahkan di bawah subtotal. PPN % diisi 11 bila Tidak.',
+    '- Total Nota = total akhir yang harus dibayar. Kode Barang = kode barang di nota (kosongkan bila tidak ada).',
+    '- Salin nama barang persis seperti di nota. Jangan mengarang; kosongkan sel yang tidak terbaca.',
+    '- Setelah tabel, tulis singkat: jumlah baris, total hasil hitung (Σ Qty × Harga setelah diskon, + PPN bila Tidak termasuk) vs Total Nota, dan sel yang ragu dibaca.'
+  ];
+  var BM_PROMPTS = {
+    A: ['Baca foto faktur/nota pembelian terlampir. Keluarkan HANYA satu tabel dalam code block, dipisah TAB, dengan header persis:', BM_HEAD]
+      .concat(BM_RULES).concat(['- Kolom Barcode dan ED DIBIARKAN KOSONG (akan diisi saat cek fisik barang).']).join('\n'),
+    B: ['Terlampir: (1) foto faktur/nota pembelian, dan (2) foto kemasan barang / daftar cek barang (berisi barcode dan tanggal kedaluwarsa).',
+        'Gabungkan keduanya. Keluarkan HANYA satu tabel dalam code block, dipisah TAB, dengan header persis:', BM_HEAD]
+      .concat(BM_RULES).concat([
+        'Aturan Barcode & ED:',
+        '- Cocokkan tiap barang di nota dengan foto/daftar cek barang berdasarkan nama, varian, dan ukuran.',
+        '- Barcode = angka di bawah garis barcode kemasan (biasanya 13 digit, diawali 899 untuk produk lokal). Salin digit persis, jangan menebak; bila buram tulis yang terbaca dan sebutkan di catatan.',
+        '- ED = tanggal kedaluwarsa, format YYYY-MM-DD. Bila hanya bulan/tahun (mis. EXP 08/2029) tulis tanggal 01 (2029-08-01).',
+        '- Bila satu barang punya beberapa ED, tulis semua di sel ED dipisah titik koma dengan jumlahnya dalam kurung, contoh: 2029-08-01 (4); 2029-07-01 (2). Total jumlah harus = Qty + Bonus.',
+        '- Bila barang memang tidak punya ED, tulis TANPA ED. Bila barang di nota tidak ada di data cek barang, kosongkan Barcode dan ED dan sebutkan di catatan.'
+      ]).join('\n'),
+    PL: [
+      'VENDOR: <isi nama vendor persis seperti di Odoo, mis. PT Moga Djaja>',
+      'CATATAN: <isi aturan khusus bila ada, mis. "harga per lusin; HNT = harga lusin ÷ 12; HET = harga lusin ÷ 10">',
+      '',
+      'Baca katalog / price list terlampir. Keluarkan HANYA satu tabel dalam code block, dipisah TAB, dengan header persis:',
+      'Vendor\tNama di Price List\tHNT\tHET\tSumber',
+      'Aturan:',
+      '- Satu baris per produk/varian. Vendor = isi VENDOR di atas pada SEMUA baris.',
+      '- Nama di Price List = nama produk lengkap dengan varian dan ukuran persis seperti di katalog.',
+      '- HNT = harga beli per pcs SEBELUM diskon nota (harga yang nanti tertulis per pcs di faktur). HET = harga eceran tertinggi / harga jual konsumen per pcs.',
+      '- Bila katalog mencantumkan harga per lusin/pak/box, ubah ke per pcs sesuai CATATAN; bila CATATAN kosong, bagi dengan isi kemasan (lusin = 12) dan sebutkan di catatan.',
+      '- Angka bulat tanpa titik/koma ribuan dan tanpa "Rp" (pembagian dibulatkan ke rupiah terdekat). Kosongkan bila tidak ada di katalog.',
+      '- Sumber = nama/periode katalog, mis. "Price list Viva Juli 2026".',
+      '- Jangan mengarang produk. Setelah tabel, sebutkan jumlah baris dan baris yang ragu.'
+    ].join('\n')
+  };
+  var BM_PROMPT = BM_PROMPTS.A;
+  function bmCopyPrompt(k){
+    var p = BM_PROMPTS[k || 'A'], msg = { A:'Prompt A disalin — kirim ke Claude/Gemini bersama foto nota',
+      B:'Prompt B disalin — kirim bersama foto nota + foto kemasan/daftar cek barang', PL:'Prompt price list disalin — isi VENDOR & CATATAN, lalu kirim bersama katalog' }[k || 'A'];
+    (navigator.clipboard ? navigator.clipboard.writeText(p) : Promise.reject()).then(function(){ bmToast('📋 ' + msg); })
+      .catch(function(){ UI.copy(p, 'Salin prompt'); });
+  }
+  /* ED: "2029-08-01" / "2029-08-01 (4); 2029-07-01 (2)" / "TANPA ED" */
+  function bmParseEd(s){
+    s = String(s || '').trim();
+    if (!s) return { tanpa:false, list:[] };
+    if (/tanpa|^-$|^n\/?a$/i.test(s)) return { tanpa:true, list:[] };
+    return { tanpa:false, list: s.split(/[;\n]+/).map(function(p){
+      var q = p.match(/\(\s*(\d+)\s*(pcs)?\s*\)|[=x×:]\s*(\d+)\s*$/i);
+      var tgl = bmDate(p.replace(/\(.*\)/,'').replace(/[=x×:]\s*\d+\s*$/,'').trim());
+      return { tgl: tgl, qty: q ? Number(q[1] || q[3]) : null };
+    }).filter(function(e){ return e.tgl; }) };
+  }
+  /* ---------- simpan price list ---------- */
+  function bmSavePL(){
+    var lines = document.getElementById('bmPLPaste').value.replace(/```\w*/g,'').split(/\r?\n/).filter(function(l){ return l.trim(); });
+    if (lines.length < 2) return bmToast('Tempel tabel price list dulu (termasuk baris judul).');
+    var sep = lines[0].indexOf('\t') > -1 ? '\t' : (lines[0].indexOf('|') > -1 ? '|' : ',');
+    var cells = function(l){ var c = l.split(sep).map(function(x){ return x.trim(); }); if (sep==='|'){ if(c[0]==='')c.shift(); if(c[c.length-1]==='')c.pop(); } return c; };
+    var hd = cells(lines[0]).map(function(x){ return x.toLowerCase(); });
+    var iV = hd.indexOf('vendor'), iN = hd.findIndex(function(x){ return /nama/.test(x); }),
+        iH = hd.findIndex(function(x){ return /^hnt/.test(x); }), iE = hd.findIndex(function(x){ return /^het/.test(x); }), iS = hd.indexOf('sumber');
+    if (iV < 0 || iN < 0 || iH < 0) return bmToast('Kolom Vendor / Nama di Price List / HNT tidak ditemukan di baris judul.');
+    var rows = lines.slice(1).map(cells).filter(function(c){ return !c.every(function(x){ return /^[-:\s]*$/.test(x); }); })
+      .map(function(c){ return [c[iV]||'', c[iN]||'', bmNumID(c[iH]), iE>-1 ? bmNumID(c[iE]) : '', iS>-1 ? (c[iS]||'') : ''];})
+      .filter(function(r){ return r[0] && r[1] && r[2]; });
+    if (!rows.length) return bmToast('Tidak ada baris valid (Vendor, Nama, HNT wajib).');
+    bmPin('Simpan ' + rows.length + ' baris ke Price List Vendor.', function(pin){
+      GS.run.withBusy('Menyimpan price list…').withSuccessHandler(function(r){
+        OWNER_PIN = pin; document.getElementById('bmPLPaste').value = '';
+        document.getElementById('bmPLSt').textContent = '✓ ' + r.baru + ' baris baru, ' + r.update + ' diperbarui (vendor: ' + r.vendor.join(', ') + ')';
+      }).withFailureHandler(function(e){ if (/PIN/.test(e.message)) OWNER_PIN=''; bmFail(e); }).bm_savePriceList(rows, pin);
+    });
+  }
+  function bmNumID(v){                     // 17.100,00 / 17,100.00 / 17100 / 16590.42 / Rp 17.100
+    var s = String(v == null ? '' : v).replace(/rp|\s|%/gi,'');
+    if (!s) return 0;
+    if (s.indexOf(',') > -1 && s.indexOf('.') > -1) s = s.lastIndexOf(',') > s.lastIndexOf('.') ? s.replace(/\./g,'').replace(',','.') : s.replace(/,/g,'');
+    else if (/^-?\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g,'');
+    else if (/^-?\d{1,3}(,\d{3})+$/.test(s)) s = s.replace(/,/g,'');
+    else s = s.replace(',','.');
+    var n = parseFloat(s); return isNaN(n) ? 0 : n;
+  }
+  function bmDate(v){                     // 2029-08-01 / 01/08/2029 / 08/2029 / 2029-08-01 00:00:00 → 2029-08-01
+    var s = String(v || '').trim(), m;
+    if (!s) return '';
+    if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return m[1] + '-' + ('0'+m[2]).slice(-2) + '-' + ('0'+m[3]).slice(-2);
+    if ((m = s.match(/^(\d{1,2})[\/.-](\d{1,2})[\/.-](\d{2,4})$/))) { var y = m[3].length === 2 ? '20' + m[3] : m[3]; return y + '-' + ('0'+m[2]).slice(-2) + '-' + ('0'+m[1]).slice(-2); }
+    if ((m = s.match(/^(\d{1,2})[\/.-](\d{2,4})$/))) { var y2 = m[2].length === 2 ? '20' + m[2] : m[2]; return y2 + '-' + ('0'+m[1]).slice(-2) + '-01'; }
+    return '';
+  }
+  /* "2+1" → [2,1] (%) · "Rp267" / angka > 100 → potongan rupiah per pcs, diubah ke % dari harga */
+  function bmDiskon(s, harga){
+    return String(s || '').split(/[+;\/]+/).map(function(p){
+      var rp = /rp/i.test(p);
+      var v = rp ? bmNumID(p) : (parseFloat(p.replace(/[%\s]/g,'').replace(',', '.')) || 0);   // persen: titik/koma = desimal
+      if (!v) return 0;
+      return (rp || v > 100) ? (harga ? v / harga * 100 : 0) : v;
+    }).filter(function(x){ return x; });
+  }
+  function bmParseTable(txt){
+    var lines = txt.replace(/```\w*/g,'').split(/\r?\n/).filter(function(l){ return l.trim(); });
+    var sep = lines.length && lines[0].indexOf('\t') > -1 ? '\t' : (lines[0].indexOf(';') > -1 ? ';' : (lines[0].indexOf('|') > -1 ? '|' : ','));
+    var rows = lines.map(function(l){ var c = l.split(sep).map(function(x){ return x.trim(); });
+      if (sep === '|') { if (c[0]==='') c.shift(); if (c[c.length-1]==='') c.pop(); } return c; })
+      .filter(function(c){ return !c.every(function(x){ return /^[-:\s]*$/.test(x); }); });  // buang garis markdown |---|
+    var hi = rows.findIndex(function(r){ return r.some(function(x){ return x.toLowerCase() === 'nama barang'; }); });
+    if (hi < 0) throw new Error('Header "Nama Barang" tidak ditemukan. Pastikan baris judul kolom ikut ditempel.');
+    var idx = {}; rows[hi].forEach(function(h, i){ var k = BM_COLS[h.toLowerCase()]; if (k) idx[k] = i; });
+    var t = { vendor:'', no_faktur:'', tanggal:'', ppn_termasuk:true, ppn_persen:11, total_nota:0, baris:[] }, first = true;
+    var nH = rows[hi].length;
+    rows.slice(hi+1).forEach(function(r){
+      while (r.length > nH && r[0] === '') r.shift();   // baris lanjutan dengan TAB berlebih di depan
+      function g(k){ return idx[k] === undefined ? '' : (r[idx[k]] || ''); }
+      if (!g('nama') && !g('kode')) return;
+      if (first) {
+        t.vendor = g('vendor'); t.no_faktur = g('no_faktur'); t.tanggal = g('tanggal');
+        t.ppn_termasuk = !/^(tidak|no|false|0|n)$/i.test(g('ppn_termasuk'));
+        t.ppn_persen = bmNumID(g('ppn_persen')) || 11; t.total_nota = bmNumID(g('total_nota')); first = false;
+      }
+      t.baris.push({ kode:g('kode'), nama:g('nama'), qty:bmNumID(g('qty')), bonus:bmNumID(g('bonus')), harga:bmNumID(g('harga')),
+        diskon:bmDiskon(g('diskon'), bmNumID(g('harga'))),
+        barcode:String(g('barcode')).replace(/[^0-9A-Za-z]/g,''), eds:bmParseEd(g('ed')) });
+    });
+    if (!t.baris.length) throw new Error('Tidak ada baris barang di bawah header.');
+    return t;
+  }
+  function bmPasteRead(){
+    var t; try { t = bmParseTable(document.getElementById('bmPaste').value); } catch (e) { return bmFail(e); }
+    if (document.getElementById('bmBBrand')) {
+      if (!bmCekBrand()) return bmToast('Isi nama brand & prefix SKU yang valid dulu (di atas kotak tempel).');
+      t.brandBaru = { brand: document.getElementById('bmBBrand').value.trim(), prefix: document.getElementById('bmBPre').value.trim().toUpperCase() };
+    }
+    document.getElementById('bmProc').disabled = true;
+    document.getElementById('bmPasteSt').textContent = 'Memproses ' + t.baris.length + ' baris…';
+    GS.run.withBusy('Memproses tabel nota…').withSuccessHandler(function(r){
+      document.getElementById('bmProc').disabled = false; document.getElementById('bmPasteSt').textContent = '';
+      document.getElementById('bmPaste').value = '';
+      bmPath('');                                   // panduan awal ditutup — lanjut di halaman nota
+      CUR = { id:r.id, status:'Draft', draft:r.draft }; bmShowEdit();
+      if (r.dup) UI.alert({ icon:'⚠️', tone:'warn', title:'No faktur sudah pernah diproses', html:'Faktur ini sudah ada di nota <b>' + bmEsc(r.dup) + '</b>. Kemungkinan dobel.<ul><li>Hapus nota baru ini (tombol 🗑 Hapus nota).</li><li>Buka nota ' + bmEsc(r.dup) + ' bila perlu revisi.</li></ul>' });
+    }).withFailureHandler(function(e){ document.getElementById('bmProc').disabled = false; document.getElementById('bmPasteSt').textContent=''; bmFail(e); })
+      .bm_fromTable(t);
+  }
+
+  /* ---------- hitungan ---------- */
+  function bmSaran(beli, het, mm){
+    var st = BMI.settings, m = (mm == null ? st.margin : mm);
+    var x = Math.ceil(Math.max(beli*(1+m), beli+st.min)/st.round)*st.round;
+    return het ? Math.min(het, x) : x;
+  }
+  function bmBeli(l){
+    var d = CUR.draft, net = bmNum(l.harga);
+    (l.diskon||[]).forEach(function(x){ net *= (1 - bmNum(x)/100); });
+    var ppn = d.ppnTermasuk ? 0 : bmNum(d.ppnPersen)/100;
+    return Math.round(net*(1+ppn)*100)/100;
+  }
+  function bmRecon(){
+    var d = CUR.draft, tot = 0;
+    d.lines.forEach(function(l){ l.beli = bmBeli(l); tot += bmNum(l.qty)*l.beli; });
+    var diff = tot - bmNum(d.totalNota), ok = Math.abs(diff) <= 100;
+    var el = document.getElementById('bmRecon');
+    if (el) { el.className = 'recon ' + (ok?'g':'r');
+      el.textContent = (ok?'✅ Cocok':'⚠️ Tidak cocok') + ' — total hitung ' + bmRp(tot) + ' vs total nota ' + bmRp(bmNum(d.totalNota))
+        + (ok ? '' : ' (selisih ' + bmRp(diff) + '). Cek qty/harga/diskon baris yang salah terbaca.'); }
+    d.lines.forEach(function(l, i){ var b = document.getElementById('bmB'+i); if (b) b.textContent = bmRp(l.beli); });
+  }
+
+  /* ---------- editor ---------- */
+  function bmShowEdit(){
+    document.getElementById('bmList').style.display = 'none';
+    document.getElementById('bmEdit').style.display = '';
+    if (CUR.status === 'Draft' || CUR.status === 'Menunggu Persetujuan') { bmRapikanNama(); bmAutoLabel(false); }
+    bmDraw();
+  }
+  function bmBack(muatUlang){
+    var c = CUR; CUR = null;
+    document.getElementById('bmEdit').style.display = 'none'; document.getElementById('bmList').style.display = '';
+    var n = c && BMI && BMI.notas.filter(function(x){ return x.id === c.id; })[0];
+    if (muatUlang || !n) return bmInit();          // nota baru / dihapus / selesai → muat ulang penuh
+    n.status = c.status; n.vendor = c.draft.vendor || n.vendor; n.no = c.draft.noFaktur || n.no;   // perbarui kartu tanpa ke server
+    n.langkah = c.draft.langkah; n.fileInfo = c.draft.fileInfo; n.file = c.draft.fileImport || n.file;
+    bmDrawList();
+  }
+
+  function bmNeed(l){
+    var n = [];
+    if (l.status === 'Ragu') n.push('pilih produk');
+    if (l.status === 'Restock' && !l.sku) n.push('SKU');
+    if (l.status === 'Baru') { if (!l.baru.nama) n.push('nama'); if (!l.baru.brand) n.push('brand'); if (!l.baru.barcode && !l.baru.barcodeAuto) n.push('barcode');
+      if (bmBcDipakai(l.baru.barcode, CUR.draft.lines.indexOf(l))) n.push('barcode sudah ada'); }
+    if (!l.tanpaEd) {
+      var tot = 0; l.ed.forEach(function(e){ tot += bmNum(e.qty); });
+      if (l.ed.some(function(e){ return !e.tgl; })) n.push('ED');
+      else if (tot !== bmNum(l.qty) + bmNum(l.bonus)) n.push('qty ED');
+    }
+    return n;
+  }
+  function bmTog(i){ if (OPEN[i]) delete OPEN[i]; else OPEN[i] = 1; bmDraw(); }
+
+  function bmDraw(){
+    var d = CUR.draft, st = CUR.status, lock = (st === 'File Dibuat' || st === 'Selesai');
+    var own = !!OWNER_PIN && !lock;
+    var vopts = BMI.vendors.slice(); if (d.vendor && vopts.indexOf(d.vendor) < 0) vopts.unshift(d.vendor);
+
+    var h = '<div class="card">'
+      + '<div class="nhead"><button class="sec" onclick="bmBack()">← Daftar nota</button>'
+      + '<span class="ttl">' + bmEsc(d.vendor || d.vendorNota || 'Nota') + ' · ' + bmEsc(d.noFaktur) + '</span>'
+      + '<span class="pill p-belum">' + bmEsc(st) + '</span>'
+      + (d.foto||[]).map(function(u,i){ return '<a href="'+bmEsc(u)+'" target="_blank">Foto '+(i+1)+'</a>'; }).join('')
+      + '<span style="flex:1"></span>'
+      + (!lock ? '<button class="sec" onclick="bmFillHet()" title="Isi HET produk baru dari tab Price List Vendor">↻ Isi HET dari price list</button>'
+              + '<button class="sec" onclick="bmAutoLabel(true)" title="Gabungkan shade/varian dengan harga sama menjadi satu label rak">🏷 Kelompokkan label</button>' : '')
+      + '<button class="sec" onclick="bmCompare()" title="Bandingkan isi nota dengan Master Data">🔄 Cek vs Master Data</button>'
+      + '</div>'
+      + '<div class="nform">'
+      + '<div><label>Vendor (sesuai Odoo)</label><input list="dlVendor" value="'+bmEsc(d.vendor||'')+'" '+(lock?'disabled ':'')+'placeholder="pilih / ketik vendor baru" onchange="bmH(\'vendor\',this.value.trim(),1)">'
+      + '<datalist id="dlVendor">' + vopts.map(function(v){ return '<option value="'+bmEsc(v)+'">'; }).join('') + '</datalist>'
+      + (d.vendor && vopts.indexOf(d.vendor) < 0 ? '<div class="warn2">⚠ Vendor baru — nama harus sama persis dengan kontak di Odoo</div>' : '')
+      + (d.vendorNota ? '<div class="hint">di nota: ' + bmEsc(d.vendorNota) + '</div>' : '') + '</div>'
+      + '<div><label>No Faktur</label><input value="'+bmEsc(d.noFaktur)+'" oninput="bmH(\'noFaktur\',this.value)"></div>'
+      + '<div><label>Tanggal Faktur</label><input type="date" value="'+bmEsc(d.tanggal)+'" oninput="bmH(\'tanggal\',this.value)"></div>'
+      + '<div><label>Total di nota</label><input value="'+bmEsc(d.totalNota)+'" oninput="bmH(\'totalNota\',bmNum(this.value),1)"></div>'
+      + '<div><label>PPN</label><select onchange="bmH(\'ppnTermasuk\',this.value===\'1\',1)"><option value="1"'+(d.ppnTermasuk?' selected':'')+'>Sudah termasuk di harga</option><option value="0"'+(!d.ppnTermasuk?' selected':'')+'>Ditambah terpisah</option></select>'
+      + (!d.ppnTermasuk ? '<div style="margin-top:4px"><label>PPN %</label><input value="'+bmEsc(d.ppnPersen)+'" oninput="bmH(\'ppnPersen\',bmNum(this.value),1)"></div>' : '') + '</div>'
+      + '</div>'
+      + '<div class="nstat"><div id="bmRecon" class="recon"></div><div id="bmSum" class="steps"></div></div>'
+      + '<div class="sub" style="margin-top:8px">Isi sel <span style="background:#fde2e2;padding:0 4px">merah</span>. Jenis <b>Restock</b> = sudah ada (pilih SKU), <b>Baru</b> = belum ada di Odoo. Enter = turun ke baris bawah. Geser tabel ke kanan untuk kolom lain.</div></div>';
+
+    if (st === 'File Dibuat') h += bmGuideOdoo(d, st);
+    else if (st === 'Selesai') h += bmSelesaiBox(d);
+    h += '<div id="bmSync"></div>';
+    var cols = lock
+      ? ['#','Nama di nota','Jenis','SKU','Nama produk','Brand','Barcode','Qty','Bonus','Harga nota','Diskon %','Modal','HET','Harga jual','ED']
+      : ['#','Nama di nota','Jenis','SKU','Nama produk','Nama di label','Brand','Barcode','Qty','Bonus','Harga nota','Diskon %',
+         'Modal lama','Modal baru','HET','Harga jual lama','Harga jual','Margin','Saran','ED (tgl · qty)','Tanpa ED','Kurang',''];
+    var prA = lock ? 11 : 12, prZ = lock ? 13 : 18;
+    h += '<div class="sheetwrap"><table class="ws"><thead><tr>' + cols.map(function(c, k){
+      return '<th class="'+(k===0?'stk1':k===1?'stk2':'')+(k>=prA&&k<=prZ?' pr':'')+'">'+c+'</th>'; }).join('') + '</tr></thead><tbody>';
+    d.lines.forEach(function(l, i){ h += lock ? bmRowLock(l, i) : bmRow(l, i, own); });
+    h += '</tbody></table></div>';
+    if (!lock) h += '<div style="margin:8px 0"><button class="sec" onclick="bmAddLine()">+ Tambah baris</button></div>';
+
+    h += '<div class="bar no-print">';
+    if (!lock) {
+      h += '<button class="sec" onclick="bmSave(false)">💾 Simpan draft</button><button onclick="bmSave(true)">Kirim ➜</button>';
+      h += OWNER_PIN ? '<button onclick="bmApprove()">✅ Setujui & buat file import</button>' : '<button class="sec" onclick="bmOwner()">🔑 Mode pemilik (ubah harga/HET)</button>';
+    }
+    if (st === 'Draft' || st === 'Menunggu Persetujuan') h += '<button class="sec" onclick="bmDelete(\''+bmEsc(CUR.id)+'\')">🗑 Hapus nota</button>';
+    if (d.fileImport) h += '<a href="'+bmEsc(d.fileImport)+'" target="_blank"><button>📄 Buka file import</button></a>';
+    h += '<div class="info" style="width:100%">' + (st==='File Dibuat' ? 'Ikuti 🧭 Panduan langkah di Odoo di atas dan centang tiap langkah. Setelah langkah terakhir dicentang, nota ditawarkan untuk ditandai selesai.'
+      : st==='Selesai' ? 'Nota ini sudah selesai dan masuk Odoo.'
+      : st==='Menunggu Persetujuan' ? 'Menunggu pemilik: klik Mode pemilik → ubah kolom HET / Harga jual bila perlu (kosong = tetap) → Setujui.'
+      : 'Kirim → bila ada produk baru atau modal naik, menunggu persetujuan pemilik; selain itu file import langsung dibuat.') + '</div></div>';
+    document.getElementById('bmEdit').innerHTML = h;
+    if (lock) document.querySelectorAll('#bmEdit .nform input, #bmEdit .nform select').forEach(function(x){ x.disabled = true; });
+    bmRecon(); bmSummary();
+  }
+
+  function bmSummary(){
+    var cnt = { Restock:0, Ragu:0, Baru:0 }, perlu = 0, naik = 0;
+    CUR.draft.lines.forEach(function(l){ cnt[l.status]++; if (bmNeed(l).length) perlu++;
+      var p = BMI.pmap[l.sku]; if (l.status!=='Baru' && p && bmBeli(l) > p.beli + 1) naik++; });
+    var el = document.getElementById('bmSum'); if (!el) return;
+    el.innerHTML = '<span>'+CUR.draft.lines.length+' baris</span><span class="ok">Restock '+cnt.Restock+'</span>'
+      + (cnt.Ragu ? '<span class="no">Belum dipilih '+cnt.Ragu+'</span>' : '') + '<span>Baru '+cnt.Baru+'</span>'
+      + (naik ? '<span class="no">▲ Modal naik '+naik+'</span>' : '')
+      + '<span class="'+(perlu?'no':'ok')+'">'+(perlu ? perlu+' baris belum lengkap' : 'Semua lengkap ✓')+'</span>';
+  }
+
+  function bmCell(i, k, val, cls, attr){   // input sel tabel
+    return '<input id="c'+i+'_'+k+'" class="'+(cls||'')+'" value="'+bmEsc(val)+'" '+(attr||'')+'>';
+  }
+  function bmArea(i, k, val, cls, attr){   // kotak teks yang tingginya ikut isi (nama produk / nama di label)
+    return '<textarea id="c'+i+'_'+k+'" rows="2" class="'+(cls||'')+'" '+(attr||'')+'>'+bmEsc(val)+'</textarea>';
+  }
+  /* "NPURE ACNE ... 50ML" → "Npure Acne ... 50ml" */
+  function bmTitle(s){
+    return String(s||'').toLowerCase().replace(/\b([a-z])/g, function(m){ return m.toUpperCase(); })
+      .replace(/(\d+(?:[.,]\d+)?)\s*(ml|gr|g|gram|mg|kg|l|pcs|oz)\b/gi, function(_, n, u){ return n + u.toLowerCase(); })
+      .replace(/\s+/g, ' ').trim();
+  }
+  function bmNamaBaru(l){                  // nama produk baru dari nama di nota (+ brand di depan bila belum ada)
+    var nm = bmTitle(l.namaNota), br = String(l.baru.brand || '').trim();
+    return br && nm.toLowerCase().indexOf(br.toLowerCase()) !== 0 ? br + ' ' + nm : nm;
+  }
+  function bmRapikanNama(){                // produk Baru: nama kosong → dari nota; nama HURUF BESAR semua → dirapikan
+    CUR.draft.lines.forEach(function(l){
+      if (l.status !== 'Baru') return;
+      var n = String(l.baru.nama || '');
+      if (!n.trim()) l.baru.nama = bmNamaBaru(l);
+      else if (/[A-Z]/.test(n) && n === n.toUpperCase()) l.baru.nama = bmTitle(n);
+    });
+  }
+  /* Baris baca-saja untuk nota yang sudah File Dibuat / Selesai — isi sesuai yang disetujui */
+  function bmRowLock(l, i){
+    var baru = l.status === 'Baru', b = l.baru || {}, sku = baru ? l.skuBaru : l.sku, p = BMI.pmap[sku] || {};
+    var nama = baru ? b.nama : (p.nama || l.namaNota), brand = baru ? b.brand : p.brand, bc = baru ? b.barcode : p.barcode;
+    var het = baru ? bmNum(b.het) : (bmNum(l.hetBaru) || bmNum(l.hetLama) || p.het);
+    var jual = baru ? bmNum(l.jualFinal) : (bmNum(l.hargaJualBaru) || bmNum(l.jualLama) || p.jual);
+    var ed = l.tanpaEd ? '<span class="sm">Tanpa ED</span>'
+      : (l.ed || []).map(function(e){ return bmEsc(e.tgl) + ((l.ed.length > 1) ? ' <span class="sm">(' + bmNum(e.qty) + ')</span>' : ''); }).join('<br>');
+    return '<tr class="r-'+l.status+'"><td class="stk1"><b>'+(i+1)+'</b></td>'
+      + '<td class="stk2"><div class="w220"><b>'+bmEsc(l.namaNota)+'</b><div class="sm">'+bmEsc(l.kode)+'</div></div></td>'
+      + '<td class="sm">'+(baru ? 'Baru' : 'Restock')+'</td><td><b>'+bmEsc(sku || '')+'</b></td>'
+      + '<td><div class="w220">'+bmEsc(nama || '')+'</div></td><td class="sm">'+bmEsc(brand || '')+'</td><td>'+bmEsc(bc || '')+'</td>'
+      + '<td class="num">'+bmNum(l.qty)+'</td><td class="num">'+(bmNum(l.bonus) || '')+'</td>'
+      + '<td class="num">'+bmRp(bmNum(l.harga))+'</td><td>'+bmEsc((l.diskon || []).join('+'))+'</td>'
+      + '<td class="pr num"><b>'+bmRp(bmBeli(l))+'</b></td><td class="pr num">'+(het ? bmRp(het) : '')+'</td>'
+      + '<td class="pr num"><b>'+(jual ? bmRp(jual) : '')+'</b></td><td style="white-space:nowrap">'+ed+'</td></tr>';
+  }
+  function bmSelesaiBox(d){
+    var nl = bmLabelPerlu(d), info = d.fileInfo || {};
+    return '<div class="card" style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><span class="okt">✓ Nota sudah masuk Odoo</span>'
+      + (nl ? '<button class="sec" onclick="bmToLabel()">🏷 Cetak label (' + nl + ' produk)</button>' : '')
+      + (info.produk ? '<span class="sub"><span class="role r-own">🔒 PEMILIK</span> Berisi produk baru — jalankan <b>Sinkron ID aturan pricelist</b> bila belum.</span>' : '')
+      + '</div>';
+  }
+
+  function bmRow(l, i, own){
+    var p = BMI.pmap[l.sku], beli = bmBeli(l), need = bmNeed(l), baru = l.status === 'Baru', b = l.baru;
+    var naik = !baru && p && beli > p.beli + 1, miss = function(x){ return need.indexOf(x) > -1 ? 'miss' : ''; };
+    var hetLama = baru ? 0 : (p ? p.het : 0);
+    var het = baru ? bmNum(b.het) : (bmNum(l.hetBaru) || hetLama);
+    var sar = (baru || p) ? bmSaran(beli, het, p && !baru ? p.mm : null) : 0;
+    var jualLama = !baru && p ? p.jual : 0;
+    var jual = bmNum(l.hargaJualBaru) || (baru ? sar : jualLama);
+    var mgRp = jual && beli ? jual - beli : 0, mgPct = beli ? mgRp / beli : 0;
+    var st = BMI.settings, aturan = Math.max(beli * (1 + st.margin), beli + st.min);
+    var overHet = jual && het && jual > het;
+    var mgCls = !jual ? '' : (jual < beli || (jual < aturan && jual < het)) ? 'mgb' : overHet ? 'mgw' : 'mgo';
+
+    var r = '<tr id="row'+i+'" class="r-'+l.status+'">';
+    r += '<td class="stk1"><b>'+(i+1)+'</b></td>';
+    r += '<td class="stk2"><div class="w220"><b>'+bmEsc(l.namaNota)+'</b><div class="sm">'+bmEsc(l.kode)+'</div></div></td>';
+    r += '<td><select id="c'+i+'_jenis" class="'+(l.status==='Ragu'?'miss':'')+'" onchange="bmSet('+i+',\'status\',this.value)">'
+      + '<option value="Ragu"'+(l.status==='Ragu'?' selected':'')+'>— pilih —</option>'
+      + '<option value="Restock"'+(l.status==='Restock'?' selected':'')+'>Restock</option>'
+      + '<option value="Baru"'+(baru?' selected':'')+'>Baru</option></select></td>';
+    // identitas produk
+    if (baru) {
+      r += '<td class="sm">(otomatis)</td>';
+      r += '<td>'+bmArea(i,'nama',b.nama,'w220 '+miss('nama'),'onchange="bmSetB('+i+',\'nama\',this.value.replace(/\\s+/g,\' \').trim())"')+'</td>';
+      var gN = b.label ? CUR.draft.lines.filter(function(x){ return x.status==='Baru' && x.baru.label === b.label; }).length : 0;
+      r += '<td>'+bmArea(i,'lbl',b.label||'','w180','placeholder="'+bmEsc(b.nama||'sama dgn nama')+'" onchange="bmSetB('+i+',\'label\',this.value.replace(/\\s+/g,\' \').trim())"')
+        + (gN > 1 ? '<div class="sm" style="color:#0f766e;font-weight:700">🏷 1 label untuk '+gN+' produk</div>' : '') + '</td>';
+      if (CUR.draft.brandBaru && b.brand === CUR.draft.brandBaru.brand) r += '<td class="sm"><b>'+bmEsc(b.brand)+'</b><div>'+bmEsc(b.prefix)+'-…</div></td>';
+      else r += '<td>'+bmCell(i,'brand',b.brand,'w100 '+miss('brand'),'list="dlBrand" onchange="bmSetB('+i+',\'brand\',this.value)"')
+        + (b.brand && !BMI.prefix[b.brand] ? '<div class="warn2">Brand baru</div><div class="sm">Prefix SKU (2–6 huruf):</div>'+bmCell(i,'pre',b.prefix,'w60'+(!b.prefix||bmPreClash(b.prefix,b.brand)?' miss':''),'onchange="bmSetB('+i+',\'prefix\',this.value.trim().toUpperCase())"')
+            + (bmPreClash(b.prefix,b.brand) ? '<div class="warn2">dipakai brand '+bmEsc(bmPreClash(b.prefix,b.brand))+'</div>' : '') : '') + '</td>';
+      var eanBad = b.barcode && bmEanOk(b.barcode) === false, dup = bmBcDipakai(b.barcode, i);
+      if (b.barcodeAuto && !b.barcode) r += '<td><div class="sm" style="color:#0f766e;font-weight:700">🏷 dibuat otomatis<br>saat disetujui</div><span class="chip" onclick="bmBcAuto('+i+',false)">batal</span></td>';
+      else r += '<td>'+bmCell(i,'bc',b.barcode,'w130 '+miss('barcode')+(dup?' miss':'')+(eanBad?' wrn':''),'onchange="bmSetB('+i+',\'barcode\',this.value.trim())"')
+        + (dup ? (dup.master
+            ? '<div class="warn2" style="white-space:normal;max-width:200px">⚠ Sudah ada: <b>'+bmEsc(dup.sku)+'</b> — '+bmEsc(dup.nama)+'</div><span class="chip" onclick="bmPick('+i+',\''+bmEsc(dup.sku)+'\')">Jadikan Restock '+bmEsc(dup.sku)+'</span>'
+            : '<div class="warn2">⚠ Sama dengan baris '+dup.baris+'</div>') : '')
+        + (eanBad ? '<div class="warn2">⚠ digit cek salah — scan ulang</div>' : '')
+        + (!b.barcode ? '<div><span class="chip" onclick="bmBcAuto('+i+',true)" title="Untuk barang tanpa barcode pabrik">tak ada barcode → buat otomatis</span></div>' : '') + '</td>';
+    } else {
+      r += '<td>'+bmCell(i,'sku',l.sku,'w180 '+(l.sku?'':'miss'),'list="dlProd" placeholder="ketik nama / SKU / scan barcode" onchange="bmPick('+i+',this.value)"')
+        + ((l.kandidat||[]).length ? '<div class="kand"><span class="sm">Usulan — klik yang sesuai:</span>' + l.kandidat.map(function(k){
+            var on = k.sku === l.sku;
+            return '<div class="kc'+(on?' on':'')+'" onclick="bmPick('+i+',\''+bmEsc(k.sku)+'\')">'+(on?'✓ ':'')+bmEsc(k.nama)
+              + '<div class="sm">'+bmEsc(k.sku)+' · '+k.skor+'%</div></div>';
+          }).join('') + '</div>' : '') + '</td>';
+      r += '<td><div class="w220">'+(p ? bmEsc(p.nama) : '<span class="sm">—</span>')+'</div></td>';
+      r += '<td class="sm">'+(p && p.label ? bmEsc(p.label) : '')+'</td>';
+      r += '<td class="sm">'+(p ? bmEsc(p.brand||'') : '')+'</td><td class="sm">'+(p ? bmEsc(p.barcode||'') : '')+'</td>';
+    }
+    // angka nota
+    r += '<td>'+bmCell(i,'qty',l.qty,'w40 num','onchange="bmSet('+i+',\'qty\',bmNum(this.value))"')+'</td>';
+    r += '<td>'+bmCell(i,'bonus',l.bonus,'w40 num','onchange="bmSet('+i+',\'bonus\',bmNum(this.value))"')+'</td>';
+    r += '<td>'+bmCell(i,'harga',l.harga,'w80 num','onchange="bmSet('+i+',\'harga\',bmNum(this.value))"')+'</td>';
+    r += '<td>'+bmCell(i,'disk',(l.diskon||[]).join('+'),'w60','onchange="bmSet('+i+',\'diskon\',this.value.split(/[+;\\s]+/).filter(String).map(bmNum))"')+'</td>';
+    // ===== blok harga =====
+    r += '<td class="pr num lama">'+(p && !baru ? bmRp(p.beli) : '')+'</td>';
+    r += '<td class="pr num '+(naik?'upc':'')+'"><b>'+bmRp(beli)+'</b>'+(naik?' ▲':'')+'</td>';
+    // HET: baru → bisa diisi siapa saja; restock → pemilik bisa ubah
+    if (baru) r += '<td class="pr">'+bmCell(i,'het',b.het,'w80 num','placeholder="isi HET" onchange="bmSetB('+i+',\'het\',bmNum(this.value)||\'\')"')+(b.hetSumber?'<div class="sm" title="'+bmEsc(b.hetSumber)+'">✓ price list</div>':'')+'</td>';
+    else if (own && p) r += '<td class="pr">'+bmCell(i,'het',l.hetBaru,'w80 num','placeholder="'+hetLama+'" onchange="bmSet('+i+',\'hetBaru\',bmNum(this.value)||\'\')"')+(bmNum(l.hetBaru)&&bmNum(l.hetBaru)!==hetLama?'<div class="sm">lama '+bmRp(hetLama)+'</div>':'')+'</td>';
+    else r += '<td class="pr num">'+(p ? bmRp(het) + (bmNum(l.hetBaru)&&bmNum(l.hetBaru)!==hetLama ? '<div class="sm">lama '+bmRp(hetLama)+'</div>' : '') : '')+'</td>';
+    r += '<td class="pr num lama">'+(jualLama ? bmRp(jualLama) : '')+'</td>';
+    // Harga jual: pemilik bisa ubah; selain pemilik tampil angka final
+    if (own && (baru || p)) r += '<td class="pr">'+bmCell(i,'hj',l.hargaJualBaru,'w80 num','placeholder="'+(baru?sar:jualLama)+'" onchange="bmSet('+i+',\'hargaJualBaru\',bmNum(this.value)||\'\')"')+'</td>';
+    else r += '<td class="pr num"><b>'+(jual ? bmRp(jual) : '')+'</b>'+(bmNum(l.hargaJualBaru)?'<div class="sm">diubah</div>':'')+'</td>';
+    r += '<td class="pr num '+mgCls+'">'+(jual ? Math.round(mgPct*1000)/10+'%<div class="sm">'+bmRp(mgRp)+'</div>' : '')+(overHet ? '<div class="warn2">di atas HET</div>' : '')+'</td>';
+    r += '<td class="pr num">'+(sar ? bmRp(sar) : '')+'</td>';
+    // ED
+    if (l.tanpaEd) r += '<td class="sm">—</td>';
+    else r += '<td>' + l.ed.map(function(e, k){
+        return '<div style="white-space:nowrap;margin-bottom:2px"><input id="c'+i+'_ed'+k+'" type="date" min="2000-01-01" max="2099-12-31" class="'+(e.tgl?'':'miss')+'" value="'+bmEsc(e.tgl)+'" oninput="bmEdKetik('+i+','+k+',this)" onblur="bmRefRow('+i+')">'
+          + ' <input id="c'+i+'_eq'+k+'" class="w40 num" value="'+bmEsc(e.qty)+'" onchange="bmSetE('+i+','+k+',\'qty\',bmNum(this.value))">'
+          + (l.ed.length>1 ? ' <span class="chip" onclick="bmEdDel('+i+','+k+')">×</span>' : '') + '</div>';
+      }).join('') + '<span class="chip" onclick="bmEdAdd('+i+')">+ ED</span></td>';
+    r += '<td style="text-align:center"><input type="checkbox" '+(l.tanpaEd?'checked':'')+' onchange="bmSet('+i+',\'tanpaEd\',this.checked)"></td>';
+    var warn = (baru && b.barcode && bmEanOk(b.barcode) === false) ? ' <span class="warn2">cek barcode</span>' : '';
+    r += '<td>'+(need.length ? '<span class="need">'+need.join(', ')+'</span>' : '<span class="done">✓</span>')+warn+'</td>';
+    r += '<td><span class="chip" title="hapus baris" onclick="bmDel('+i+')">🗑</span></td>';
+    return r + '</tr>';
+  }
+
+  // perbarui satu baris tanpa menggambar ulang seluruh tabel (fokus sel tetap)
+  function bmRefRow(i){
+    setTimeout(function(){
+      var aid = document.activeElement && document.activeElement.id;
+      var tr = document.getElementById('row'+i), own = !!OWNER_PIN && CUR.status !== 'File Dibuat' && CUR.status !== 'Selesai';
+      if (tr) tr.outerHTML = bmRow(CUR.draft.lines[i], i, own);
+      bmRecon(); bmSummary();
+      if (aid && document.getElementById(aid)) document.getElementById(aid).focus();
+    }, 0);
+  }
+  function bmSet(i, k, v){ var l = CUR.draft.lines[i]; l[k] = v;
+    if ((k==='qty' || k==='bonus') && l.ed.length===1) l.ed[0].qty = bmNum(l.qty)+bmNum(l.bonus);
+    if (k==='status' && v==='Baru' && !l.baru.brand) { var any = CUR.draft.lines.filter(function(x){ return x.baru && x.baru.brand; })[0]; if (any) { l.baru.brand = any.baru.brand; l.baru.prefix = any.baru.prefix; } if (!l.baru.nama) l.baru.nama = bmNamaBaru(l); }
+    bmRefRow(i); }
+  function bmSetB(i, k, v){ var b = CUR.draft.lines[i].baru; b[k] = v; if (k==='label') b.labelManual = !!v; if (k==='brand') b.prefix = BMI.prefix[v] || b.prefix;
+    if (k==='barcode') { var dp = bmBcDipakai(v, i); if (dp && dp.master) bmToast('⚠ Barcode ' + v + ' sudah dipakai ' + dp.sku + ' — ' + dp.nama + '. Klik "Jadikan Restock" di baris ' + (i+1) + '.'); }
+    if (k==='brand' && !b.nama) b.nama = bmNamaBaru(CUR.draft.lines[i]);
+    if (k === 'label') return bmRedrawKeepFocus();   // jumlah "1 label untuk N produk" di baris lain ikut diperbarui
+    bmRefRow(i); }
+  function bmRedrawKeepFocus(){
+    setTimeout(function(){
+      var aid = document.activeElement && document.activeElement.id, wrap = document.querySelector('.sheetwrap'), sx = wrap ? wrap.scrollLeft : 0, sy = wrap ? wrap.scrollTop : 0;
+      bmDraw();
+      var w2 = document.querySelector('.sheetwrap'); if (w2) { w2.scrollLeft = sx; w2.scrollTop = sy; }
+      if (aid && document.getElementById(aid)) document.getElementById(aid).focus();
+    }, 0);
+  }
+    /* Usulan "Nama di label": baris Baru yang namanya hanya beda di 1–2 kata terakhir (shade/nomor/warna)
+     dan HET + harga jualnya sama → satu label bersama. force=true menimpa usulan lama (bukan yang diketik manual). */
+  function bmAutoLabel(force){
+    var L = CUR.draft.lines, cand = [], cnt = {};
+    L.forEach(function(l, i){
+      if (l.status !== 'Baru' || !l.baru.nama) return;
+      if (!force && l.baru.label != null) return;
+      if (force && l.baru.labelManual) return;
+      var het = bmNum(l.baru.het), jual = bmNum(l.hargaJualBaru) || bmSaran(bmBeli(l), het);
+      var w = String(l.baru.nama).replace(/\s*\([^)]*\)\s*$/,'').trim().split(/\s+/), cs = [];
+      [1,2].forEach(function(k){
+        var t = w.slice(0, w.length - k);
+        while (t.length && /^(no\.?|nomor|#)$/i.test(t[t.length-1])) t.pop();   // "Brush No. 01" → "Brush"
+        if (t.length >= 2) cs.push(t.join(' '));
+      });
+      if (/\([^)]*\)\s*$/.test(l.baru.nama)) cs.unshift(w.join(' '));            // "Glue (white)" → "Glue"
+      cs = cs.filter(function(c, k){ return cs.indexOf(c) === k; });               // satu baris = satu suara per usulan
+      cand.push({ i:i, cs:cs, key:'|'+het+'|'+jual });
+      cs.forEach(function(c){ var k = c.toLowerCase() + '|' + het + '|' + jual; cnt[k] = (cnt[k]||0) + 1; });
+    });
+    var n = 0;
+    cand.forEach(function(x){
+      var best = '', bc = 1;
+      x.cs.forEach(function(c){ var v = cnt[c.toLowerCase() + x.key] || 0; if (v > bc) { bc = v; best = c; } });
+      L[x.i].baru.label = best; if (best) n++;
+    });
+    if (force) { bmDraw(); bmToast(n ? '🏷 ' + n + ' produk dikelompokkan — cek kolom Nama di label' : 'Tidak ada shade/varian dengan harga sama untuk dikelompokkan.'); }
+  }
+  function bmBcAuto(i, v){ var b = CUR.draft.lines[i].baru; b.barcodeAuto = v; if (v) b.barcode = ''; bmRefRow(i); }
+  function bmSetE(i, k, f, v){ CUR.draft.lines[i].ed[k][f] = v; bmRefRow(i); }
+  /* ED diketik: simpan tanpa menggambar ulang baris (supaya tahun bisa diketik 4 digit); baris digambar ulang saat keluar kolom */
+  function bmEdKetik(i, k, el){
+    var v = el.value, ok = /^(20)\d{2}-\d{2}-\d{2}$/.test(v);
+    CUR.draft.lines[i].ed[k].tgl = ok ? v : '';
+    el.classList.toggle('miss', !ok);
+  }
+  var SYNC = [];
+  function bmCompare(){
+    GS.run.withBusy('Membandingkan dengan Master Data…').withSuccessHandler(function(diffs){
+      SYNC = diffs; var box = document.getElementById('bmSync');
+      if (!diffs.length) { box.innerHTML = ''; return bmToast('✓ Nota dan Master Data sudah sama'); }
+      var h = '<div class="card sync"><b>Perbedaan nota vs Master Data ('+diffs.length+')</b>'
+        + '<div class="sub" style="margin:4px 0 8px">Pilih mana yang benar untuk tiap baris. <b>Pakai Master</b> = isi nota diganti dengan Master Data. <b>Pakai Nota</b> = Master Data diganti dengan isi nota.'
+        + (CUR.status==='File Dibuat' ? ' File import akan <b>dibuat ulang</b> otomatis.' : '')
+        + (CUR.status==='Selesai' ? ' <b>Nota sudah masuk Odoo</b> — perubahan juga harus disesuaikan manual di Odoo.' : '') + '</div>'
+        + '<div style="margin-bottom:6px"><span class="chip" onclick="bmSyncAll(\'master\')">Semua pakai Master</span><span class="chip" onclick="bmSyncAll(\'nota\')">Semua pakai Nota</span></div>'
+        + '<div class="sheetwrap" style="max-height:45vh"><table class="ws"><thead><tr><th>SKU</th><th>Produk (master)</th><th>Kolom</th><th>Di nota</th><th>Di Master Data</th><th>Pilih</th></tr></thead><tbody>'
+        + diffs.map(function(x, k){
+            var f = function(v){ return (x.field==='het'||x.field==='jual') ? bmRp(v) : bmEsc(v); };
+            return '<tr><td>'+bmEsc(x.sku)+'</td><td><div class="w220">'+bmEsc(x.produk)+'</div></td><td>'+bmEsc(x.label)+'</td>'
+              + '<td>'+f(x.nota)+'</td><td><b>'+f(x.master)+'</b></td>'
+              + '<td class="pk"><label><input type="radio" name="sy'+k+'" value="master" checked> Pakai Master</label>'
+              + '<label><input type="radio" name="sy'+k+'" value="nota"> Pakai Nota</label></td></tr>';
+          }).join('') + '</tbody></table></div>'
+        + '<div style="margin-top:8px"><button onclick="bmSyncApply()">Terapkan</button> <button class="sec" onclick="document.getElementById(\'bmSync\').innerHTML=\'\'">Tutup</button></div></div>';
+      box.innerHTML = h; box.scrollIntoView({behavior:'smooth'});
+    }).withFailureHandler(bmFail).bm_compare(CUR.id);
+  }
+  function bmSyncAll(v){ SYNC.forEach(function(x, k){ var r = document.querySelector('input[name="sy'+k+'"][value="'+v+'"]'); if (r) r.checked = true; }); }
+  function bmSyncApply(){
+    var ch = SYNC.map(function(x, k){ var r = document.querySelector('input[name="sy'+k+'"]:checked'); return { i:x.i, field:x.field, pilih: r ? r.value : 'master' }; });
+    GS.run.withBusy('Menerapkan & membuat ulang file…').withSuccessHandler(function(r){
+      bmToast('✓ ' + r.keNota + ' diperbarui di nota, ' + r.keMaster + ' di Master Data' + (r.status==='File Dibuat' ? ' — file import dibuat ulang' : ''));
+      bmInit(function(){ bmOpen(CUR.id); });          // muat ulang data master + nota
+    }).withFailureHandler(bmFail).bm_applySync(CUR.id, ch);
+  }
+
+  /* ---------- panduan langkah di Odoo ---------- */
+  var BM_STEPS = [
+    { k:'siap', n:'siap', t:'Persiapan vendor / brand baru', siapa:'own' },
+    { k:'unduh', t:'Unduh file import', items:[
+        'Klik tombol <b>📄 Buka file import</b> di bawah nota ini.',
+        'Di Google Sheets: <b>File → Download → Microsoft Excel (.xlsx)</b>.',
+        'Simpan di komputer — semua langkah berikutnya memakai file ini.' ],
+      tip:'Di setiap layar import Odoo: pilih <b>Sheet</b> yang disebut di langkahnya, klik <b>Tes</b> dulu, baru <b>Impor</b> bila muncul "Segalanya tampak sah".' },
+    { k:'het', n:'het', t:'Update HET produk lama', menu:['Inventaris','Produk','Produk'], sheet:'Update HET Produk', items:[
+        'Tampilan list → ikon ⚙ di samping judul → <b>Import records</b> → upload file.',
+        'Pilih sheet <b>Update HET Produk</b> → Tes → Impor.' ] },
+    { k:'produk', n:'produk', t:'Import produk baru', menu:['Inventaris','Produk','Produk'], sheet:'Import Produk', items:[
+        'Tampilan list → ⚙ → <b>Import records</b> → upload file → sheet <b>Import Produk</b>.',
+        'Tes → Impor.' ],
+      cek:'Buka satu produk baru: Pajak Penjualan & Pembelian <b>kosong</b>, Pelacakan <b>Menurut Lot</b>, Tersedia di POS ✓.' },
+    { k:'pl', n:'pl', t:'Import harga Aura', menu:['Point of Sale','Produk','Daftar Harga'], sheet:'Import Pricelist', items:[
+        'Tampilan list → ⚙ → <b>Import records</b> → upload file → sheet <b>Import Pricelist</b>.',
+        'Bila kolom <i>item_ids/id</i> kosong semua: klik ✖ di kolom itu (tidak diimpor).',
+        'Tes → Impor.' ],
+      cek:'Buka pricelist <b>Harga Aura</b>: jumlah aturan bertambah sesuai baris di sheet.' },
+    { k:'manual', n:'manual', t:'Hapus promo lama', menu:['Point of Sale','Produk','Diskon & Loyalitas'], sheet:'Hapus Promo Lama', items:[
+        'Kerjakan <b>setelah</b> Import harga Aura berhasil — harga barunya sudah aktif lewat pricelist.',
+        'Buka sheet <b>Hapus Promo Lama</b>, kerjakan tiap baris sesuai kolom <i>Yang perlu dilakukan</i>.',
+        'Promo lama: buka program promo yang memuat produk itu → keluarkan produknya, atau <b>arsipkan</b> promonya bila semua produknya sudah ikut Harga Aura.',
+        '"Cek aturan dobel" → POS → Produk → Daftar Harga → <b>Harga Aura</b> → cari produk → bila ada 2 aturan, hapus yang harganya lama.' ],
+      tip:'Setelah nota selesai, jalankan 🔒 <b>Sinkron ID aturan pricelist</b> supaya perubahan harga berikutnya langsung memperbarui aturan yang sama (tanpa pengingat lagi).' },
+    { k:'po', n:'po', t:'Import PO & konfirmasi', menu:['Purchase','Order','Permintaan Penawaran'], sheet:'Import PO', items:[
+        'Tampilan list → ⚙ di samping judul → <b>Import records</b> → upload file → sheet <b>Import PO</b> → Tes → Impor.',
+        'Buka RFQ yang baru terbentuk → klik <b>Konfirmasi Order</b>.' ],
+      cek:'Vendor & Referensi Vendor benar, kolom Pajak kosong, total sama dengan nota.',
+      warn:'Jangan pakai tombol <b>Upload</b> — itu untuk membaca tagihan, hasilnya RFQ kosong.' },
+    { k:'lot', n:'lot', t:'Import lot & ED', menu:['Inventaris','Produk','Nomor Lot/Seri'], sheet:'Import Lot', items:[
+        'Tampilan list → ⚙ → <b>Import records</b> → upload file → sheet <b>Import Lot</b> → Tes → Impor.' ],
+      warn:'Tes menolak karena lot sudah ada (restock dengan ED sama)? Hapus baris itu dari sheet lalu ulangi — lot lama tinggal dipilih saat menerima barang.' },
+    { k:'bc', n:'bc', t:'Cetak stiker barcode internal', sheet:'Cetak Barcode', items:[
+        'Sheet <b>Cetak Barcode</b> berisi produk tanpa barcode pabrik beserta barcode baru (EAN-13, awalan 20) dan jumlah stiker.',
+        'Di aplikasi <b>Label Life</b>: buat label jenis <b>Barcode → EAN-13</b>, isi angka barcode (atau impor dari Excel bila tersedia), cetak sesuai Jumlah Stiker.',
+        'Tempel di kemasan sebelum barang dipajang — kasir akan scan barcode ini.' ],
+      tip:'Barcode internal juga sudah masuk ke Odoo lewat sheet Import Produk, jadi langsung bisa di-scan di kasir.' },
+    { k:'terima', t:'Terima barang & validasi', menu:['Purchase','PO nota ini','Terima'], sheet:'Ceklis Penerimaan', items:[
+        'Di tiap baris produk klik <b>Perincian</b>.',
+        'Kolom <b>Nomor Lot</b>: ketik 4 digit awal lot (lihat sheet Ceklis Penerimaan) → pilih → <b>Simpan</b>. ED terisi otomatis.',
+        'Semua baris sudah ada lot → klik <b>Validasi</b>.' ],
+      warn:'Odoo bertanya "Buat backorder?" → ada qty yang belum terisi lot. Jangan buat backorder; cek lagi barisnya.' }
+  ];
+  /* Progres panduan Odoo — SATU sumber untuk kartu nota (halaman utama) dan panduan di dalam nota */
+  function bmProg(info, L){
+    L = L || {}; var vb = info && info.vendorBaru, bb = (info && info.brandBaru) || [];
+    var p = { done:0, total:0, next:null, skip:{} };
+    BM_STEPS.forEach(function(s){
+      var skip = s.k === 'siap' ? !(vb || bb.length) : !!(info && s.n && !info[s.n]);
+      if (skip) { p.skip[s.k] = 1; return; }
+      p.total++; if (L[s.k]) p.done++; else if (!p.next) p.next = s;
+    });
+    return p;
+  }
+  /* Jumlah produk di nota yang butuh label baru: produk baru, harga jual berubah, atau HET berubah */
+  function bmLabelPerlu(d){
+    return (d.lines || []).filter(function(l){
+      return l.status === 'Baru'
+        || (bmNum(l.hargaJualBaru) && bmNum(l.hargaJualBaru) !== bmNum(l.jualLama))
+        || (bmNum(l.hetBaru) && bmNum(l.hetBaru) !== bmNum(l.hetLama));
+    }).length;
+  }
+  function bmToLabel(){
+    var sudah = LBL_OK;                            // belum pernah dimuat → showTab yang memuat
+    showTab('label'); document.getElementById('fSt').value = 'perlu';
+    if (sudah) load();                             // sudah pernah → muat ulang supaya status terbaru
+  }
+  /* Pengingat di halaman utama: jumlah label berstatus belum OK di Master Data */
+  function bmLabelBanner(){
+    var el = document.getElementById('bmLabelBan'); if (!el) return;
+    var n = BMI && BMI.labelPerlu != null ? BMI.labelPerlu
+          : (typeof ALL !== 'undefined' ? ALL : []).filter(function(r){ return r.status && r.status !== 'OK'; }).length;
+    el.innerHTML = n ? '<div class="card lblban"><span class="lbi">🏷</span><div><b>' + n + ' label perlu dicetak</b>'
+      + '<div class="sub">Produk baru atau harga jual/HET yang berubah. Cetak setelah notanya ditandai sudah masuk Odoo.</div></div>'
+      + '<button onclick="bmToLabel()">Buka Cetak Label →</button></div>' : '';
+  }
+  var BM_GOPEN = {};
+  function bmGToggle(k){ BM_GOPEN[k] = !BM_GOPEN[k]; bmDraw(); }
+  function bmGuideOdoo(d, st){
+    var info = d.fileInfo || null, L = d.langkah || {}, P = bmProg(info, L), cur = P.next ? P.next.k : null;
+    var vb = info && info.vendorBaru, bb = (info && info.brandBaru) || [];
+    BM_STEPS[0].items = [];
+    if (vb) BM_STEPS[0].items.push('<b>Vendor baru "' + bmEsc(vb) + '"</b>: Purchase → Order → Vendor → <b>Baru</b> → Perusahaan, nama persis "' + bmEsc(vb) + '" → Simpan.');
+    if (bb.length) BM_STEPS[0].items.push('<b>Brand baru: ' + bb.map(bmEsc).join(', ') + '</b> → Inventaris → Konfigurasi → <b>Kategori Produk</b> → Baru → nama persis brand; samakan pengaturan dengan kategori Viva → Simpan.');
+    if (!BM_STEPS[0].items.length) BM_STEPS[0].items.push('Tidak ada vendor / brand baru.');
+    var h = '<div class="card guide2"><div class="g2hd"><div><b>🧭 Panduan langkah di Odoo</b>'
+      + '<div class="sub">Kerjakan berurutan. Langkah yang sedang dikerjakan terbuka otomatis; klik judul langkah lain untuk melihat isinya.</div></div>'
+      + '<div class="g2prog"><div class="bar2"><i style="width:'+Math.round(P.done/Math.max(1,P.total)*100)+'%"></i></div><span>'+P.done+' / '+P.total+'</span></div></div><ol class="flow g2">';
+    var no = 0;
+    BM_STEPS.forEach(function(s){
+      if (P.skip[s.k]) {
+        h += '<li class="skip"><span class="num">–</span><div class="stt"><span class="tt">'+s.t+'</span><span class="g2chip mut">tidak perlu untuk nota ini</span></div></li>'; return; }
+      no++;
+      var done = !!L[s.k], open = BM_GOPEN[s.k] != null ? BM_GOPEN[s.k] : (s.k === cur), isCur = s.k === cur;
+      var cnt = info && s.n && info[s.n] && s.n !== 'siap' ? '<span class="g2chip">'+info[s.n]+' baris</span>' : '';
+      h += '<li class="'+(done?'done ':'')+(isCur?'cur ':'')+(s.k==='siap'?'own':'')+'"><span class="num">'+(done?'✓':no)+'</span>'
+        + '<div class="stt"><span class="tt g2t" onclick="bmGToggle(\''+s.k+'\')">'+s.t+' <span class="car">'+(open?'▾':'▸')+'</span></span>'
+        + (s.sheet ? '<span class="g2chip sh">📄 '+s.sheet+'</span>' : '') + cnt + (isCur ? '<span class="g2chip now">sekarang</span>' : '')
+        + (st === 'Selesai' ? '' : '<label class="ck"><input type="checkbox" '+(done?'checked':'')+' onchange="bmStep(\''+s.k+'\',this.checked)"> selesai</label>') + '</div>';
+      if (open) {
+        h += '<div class="sd">';
+        if (s.menu) h += '<div class="crumb">' + s.menu.map(function(c){ return '<span>'+c+'</span>'; }).join('<i>›</i>') + '</div>';
+        h += '<ol class="g2items">' + (s.items||[]).map(function(t){ return '<li>'+t+'</li>'; }).join('') + '</ol>';
+        if (s.cek) h += '<div class="tip">✅ <b>Cek:</b> '+s.cek+'</div>';
+        if (s.tip) h += '<div class="tip">💡 '+s.tip+'</div>';
+        if (s.warn) h += '<div class="tip warn">⚠️ '+s.warn+'</div>';
+        h += '</div>';
+      }
+      h += '</li>';
+    });
+    h += '</ol>';
+    var nl = bmLabelPerlu(d);
+    h += '<div class="g2end">'
+      + (st === 'Selesai' ? '<span class="okt">✓ Nota sudah ditandai masuk Odoo</span>'
+         : '<button onclick="bmDone()">✓ Sudah masuk Odoo</button><span class="sub">'
+           + (P.done < P.total ? 'Centang semua langkah di atas dulu. Begitu langkah terakhir dicentang, nota otomatis ditawarkan untuk ditandai selesai.' : 'Semua langkah sudah dicentang.') + '</span>')
+      + (nl ? '<button class="sec" onclick="bmToLabel()">🏷 Cetak label (' + nl + ' produk)</button>' : '')
+      + '</div>'
+      + (info && info.produk ? '<div class="tip" style="margin-top:8px"><span class="role r-own">🔒 PEMILIK</span> Nota ini berisi produk baru — setelah selesai, jalankan <b>Sinkron ID aturan pricelist</b> di Persiapan &amp; perawatan data.</div>' : '');
+    return h + '</div>';
+  }
+  function bmStep(k, v){
+    CUR.draft.langkah = CUR.draft.langkah || {}; CUR.draft.langkah[k] = v;
+    GS.run.withBusy('Menyimpan progres…').withSuccessHandler(function(){
+      bmDraw();
+      var P = bmProg(CUR.draft.fileInfo || null, CUR.draft.langkah);
+      if (v && CUR.status === 'File Dibuat' && P.total && P.done === P.total) bmDone();
+    }).withFailureHandler(bmFail).bm_saveSteps(CUR.id, CUR.draft.langkah);
+  }
+
+  /* ---------- sinkron ID aturan pricelist ---------- */
+  function bmSyncRules(){
+    var txt = document.getElementById('bmRulePaste').value, lines = txt.split(/\r?\n/).filter(function(l){ return l.trim(); });
+    if (lines.length < 2) return bmToast('Tempel isi export dulu (termasuk baris judul).');
+    var sep = lines[0].indexOf('\t') > -1 ? '\t' : (lines[0].indexOf(';') > -1 ? ';' : ',');
+    var hd = lines[0].split(sep).map(function(x){ return x.trim().toLowerCase(); });
+    var iR = hd.findIndex(function(x){ return /item_ids\/id$|peraturan.*\/id eksternal$/.test(x) && !/produk|product/.test(x); });
+    var iP = hd.findIndex(function(x){ return /product_tmpl_id\/id$|produk\/id eksternal$/.test(x); });
+    if (iR < 0 || iP < 0) return bmToast('Kolom ID aturan / ID produk tidak ditemukan. Cek langkah export.');
+    var pairs = lines.slice(1).map(function(l){ var c = l.split(sep); return [String(c[iR]||'').trim(), String(c[iP]||'').trim()]; })
+      .filter(function(p){ return p[0] && p[1]; });
+    bmPin('Sinkronkan ' + pairs.length + ' ID aturan pricelist ke Master Data.', function(pin){
+      GS.run.withBusy('Menyinkronkan ID aturan…').withSuccessHandler(function(r){
+        OWNER_PIN = pin; document.getElementById('bmRulePaste').value = '';
+        UI.alert({ icon:'✅', tone:'ok', title:'ID aturan tersinkron', html:'<b>' + r.cocok + '</b> produk terisi ID aturan (' + r.berubah + ' baru/berubah).'
+          + (r.tidakCocok ? '<br>' + r.tidakCocok + ' aturan tidak ditemukan di Master Data.' : '') });
+      }).withFailureHandler(function(e){ if (/PIN/.test(e.message)) OWNER_PIN=''; bmFail(e); }).bm_syncRuleIds(pairs, pin);
+    });
+  }
+
+  /* ---------- cek barcode (checksum EAN-13 / EAN-8) ---------- */
+  function bmPreClash(p, brand){   // prefix sudah dipakai brand lain?
+    p = String(p||'').toUpperCase(); if (!p) return '';
+    for (var k in BMI.prefix) if (BMI.prefix[k] === p && k.toLowerCase() !== String(brand||'').toLowerCase()) return k;
+    return '';
+  }
+
+  function bmBcDipakai(bc, i){   // barcode produk Baru sudah ada di Master / di baris Baru lain di nota ini?
+    bc = String(bc || '').trim(); if (!bc) return null;
+    var p = BMI.products.filter(function(x){ return String(x.barcode).trim() === bc; })[0];
+    if (p) return { master:true, sku:p.sku, nama:p.nama };
+    var j = -1; CUR.draft.lines.forEach(function(l, k){ if (j < 0 && k !== i && l.status === 'Baru' && String(l.baru.barcode || '').trim() === bc) j = k; });
+    return j > -1 ? { master:false, baris:j + 1 } : null;
+  }
+
+  function bmEanOk(b){
+    b = String(b||'').trim(); if (!/^\d{8}$|^\d{13}$/.test(b)) return null;   // format lain: tidak dicek
+    var d = b.split('').map(Number), chk = d.pop(), s = 0;
+    d.reverse().forEach(function(x, i){ s += x * (i % 2 === 0 ? 3 : 1); });
+    return (10 - s % 10) % 10 === chk;
+  }
+
+  function bmFillHet(){
+    GS.run.withBusy('Mengisi HET dari price list…').withSuccessHandler(function(r){
+      CUR.draft = r.draft; bmDraw();
+      bmToast(r.n ? '✓ HET terisi untuk ' + r.n + ' produk baru' : 'Tidak ada yang cocok di tab Price List Vendor untuk vendor ini.');
+    }).withFailureHandler(bmFail).bm_fillHet(CUR.draft);
+  }
+
+  // Enter = pindah ke sel yang sama di baris bawah (Shift+Enter = ke atas), seperti spreadsheet.
+  // Cocok juga untuk scanner barcode yang otomatis mengirim Enter.
+  document.addEventListener('keydown', function(e){
+    if (e.key !== 'Enter' || !CUR) return;
+    var t = e.target, m = t && t.id && t.id.match(/^c(\d+)_(.+)$/);
+    if (!m) return;
+    if (t.tagName === 'TEXTAREA') e.preventDefault();   // nama/label: Enter = pindah ke baris tabel berikutnya
+    var i = +m[1], k = m[2], dir = e.shiftKey ? -1 : 1, n = CUR.draft.lines.length;
+    setTimeout(function(){                         // biarkan pilihan datalist/scan masuk dulu
+      for (var j = i + dir; j >= 0 && j < n; j += dir) {
+        var el = document.getElementById('c' + j + '_' + k);
+        if (el) { el.focus(); if (el.select) el.select(); return; }
+      }
+      t.blur();                                    // baris terakhir: simpan isian
+    }, 0);
+  });
+
+  /* ---------- update state ---------- */
+  function bmH(k, v, re){ CUR.draft[k] = v; if (re) { if (k==='ppnTermasuk') bmDraw(); else bmRecon(); } }
+  function bmL(i, k, v, re){ var l = CUR.draft.lines[i]; l[k] = v;
+    if (k==='qty' || k==='bonus') { if (l.ed.length===1) l.ed[0].qty = bmNum(l.qty)+bmNum(l.bonus); }
+    if (re) bmDraw(); else bmRecon(); }
+  function bmB(i, k, v, re){ CUR.draft.lines[i].baru[k] = v; if (re) bmDraw(); }
+  function bmE(i, k, f, v){ CUR.draft.lines[i].ed[k][f] = v; bmDraw(); }
+  function bmEdAdd(i){ CUR.draft.lines[i].ed.push({tgl:'',qty:0}); bmRefRow(i); }
+  function bmEdDel(i,k){ CUR.draft.lines[i].ed.splice(k,1); bmRefRow(i); }
+  function bmDel(i){
+    UI.confirm({ icon:'🗑', tone:'danger', title:'Hapus baris ini?', html:'<b>' + bmEsc(CUR.draft.lines[i].namaNota || ('Baris ' + (i+1))) + '</b> akan dihapus dari nota.', ok:'Hapus', okClass:'danger' })
+      .then(function(y){ if (y) { CUR.draft.lines.splice(i,1); bmDraw(); } });
+  }
+  function bmAddLine(){ CUR.draft.lines.push({no:0,kode:'',namaNota:'(baris manual)',qty:1,bonus:0,harga:0,diskon:[],beli:0,status:'Ragu',sku:'',kandidat:[],
+      baru:{nama:'',brand:'',prefix:'',barcode:'',het:'',hetSumber:''},ed:[{tgl:'',qty:1}],tanpaEd:false,hargaJualBaru:''}); bmDraw(); }
+  function bmPick(i, q){                   // q = SKU, nama produk persis, atau barcode kemasan
+    q = String(q || '').trim(); if (!q) return;
+    var lq = q.toLowerCase();
+    var p = BMI.pmap[q.toUpperCase()]
+      || BMI.products.filter(function(x){ return x.barcode && String(x.barcode).trim() === q; })[0]
+      || BMI.products.filter(function(x){ return String(x.nama).toLowerCase() === lq; })[0];
+    if (!p) return bmToast('"' + q + '" tidak ditemukan — pilih dari daftar, ketik SKU, atau scan barcode kemasan.');
+    var l = CUR.draft.lines[i]; l.sku = p.sku; l.status = 'Restock'; bmRefRow(i);
+  }
+  function bmPrep(){ CUR.draft.lines.forEach(function(l){ l.beli = bmBeli(l);
+    if (l.status==='Baru' && !l.baru.prefix) l.baru.prefix = BMI.prefix[l.baru.brand] || ''; }); }
+
+  /* ---------- aksi ---------- */
+  var BM_BUSY = false;
+  function bmSave(kirim){
+    if (GS.sibuk()) return;
+    bmPrep();
+    GS.run.withBusy(kirim ? 'Mengirim & memproses nota…' : 'Menyimpan draft…').withSuccessHandler(function(r){
+      CUR.status = r.status;
+      if (r.url) CUR.draft.fileImport = r.url;
+      bmToast(r.status === 'Draft' ? '💾 Draft tersimpan' : r.status === 'Menunggu Persetujuan' ? '📨 Dikirim — menunggu persetujuan pemilik' : '✅ File import dibuat');
+      if (r.status === 'File Dibuat') bmOpen(CUR.id); else bmDraw();
+    }).withFailureHandler(bmFail).bm_save(CUR.id, CUR.draft, kirim);
+  }
+  function bmOwner(){
+    UI.pin({ title:'Masuk mode pemilik', msg:'Mode pemilik membuka kolom HET & Harga jual untuk diubah, dan tombol Setujui.' })
+      .then(function(p){ if (p) { OWNER_PIN = p; bmDraw(); bmToast('🔑 Mode pemilik aktif'); } });
+  }
+  function bmPin(msg, cb){
+    if (OWNER_PIN) return cb(OWNER_PIN);
+    UI.pin({ msg: msg }).then(function(p){ if (p) cb(p); });
+  }
+  function bmApprove(){
+    if (GS.sibuk()) return;
+    var L = CUR.draft.lines, nb = L.filter(function(l){ return l.status==='Baru'; }).length, nr = L.length - nb;
+    UI.confirm({ icon:'✅', tone:'ok', title:'Setujui & buat file import?', okClass:'own', ok:'Setujui',
+      html:'<ul><li><b>' + nr + '</b> barang restock' + (nb ? ', <b>' + nb + '</b> produk baru langsung ditambahkan ke Master Data' : '') + '.</li>'
+        + '<li>Harga beli, HET & harga jual di Master Data diperbarui.</li><li>File import Odoo dibuat di Drive.</li></ul>'
+        + '<div class="sub" style="margin-top:6px">Setelah disetujui nota tidak bisa diedit — koreksi lewat 🔄 Cek vs Master Data.</div>' }).then(function(y){
+      if (!y) return;
+      bmPrep();
+      GS.run.withBusy('Menyetujui & membuat file import…').withSuccessHandler(function(r){
+        bmToast('✅ Disetujui. ' + r.baru + ' produk baru' + (r.manual ? ', ' + r.manual + ' promo lama perlu dihapus' : '') + '. Label masuk antrian cetak.');
+        bmOpen(CUR.id);
+      }).withFailureHandler(function(e){ if (/PIN/.test(e.message)) OWNER_PIN=''; bmFail(e); bmDraw(); }).bm_approve(CUR.id, CUR.draft, OWNER_PIN);
+    });
+  }
+  function bmDone(){
+    var d = CUR.draft, id = CUR.id, P = bmProg(d.fileInfo || null, d.langkah), nl = bmLabelPerlu(d);
+    var sisa = BM_STEPS.filter(function(s){ return !P.skip[s.k] && !(d.langkah || {})[s.k]; });
+    UI.confirm({ icon:'📦', title:'Tandai nota selesai di Odoo?',
+      html: (sisa.length ? '<div class="tip warn">⚠️ Belum dicentang: ' + sisa.map(function(s){ return s.t; }).join(', ') + '.</div>'
+                         : 'Semua langkah di Odoo sudah dicentang.')
+        + '<div class="sub" style="margin-top:6px">Produk baru ditandai tersedia di POS, lalu kamu kembali ke halaman utama Barang Masuk.'
+        + (nl ? ' <b>' + nl + ' produk</b> perlu label baru — cetak lewat 🏷 Buka Cetak Label.' : '') + '</div>',
+      ok:'Ya, selesai' }).then(function(y){
+      if (!y) return;
+      GS.run.withBusy('Menyimpan status…').withSuccessHandler(function(){
+        bmToast(nl ? '✓ Nota selesai — ' + nl + ' label perlu dicetak' : '✓ Nota selesai');
+        bmBack(true);
+      }).withFailureHandler(bmFail).bm_doneOdoo(id);
+    });
+  }
+</script>
