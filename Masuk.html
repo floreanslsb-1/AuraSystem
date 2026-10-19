@@ -351,7 +351,8 @@
         + '<div class="chk">Cek nama vendor: <input id="bmCkV" list="dlVendor2" placeholder="ketik nama vendor" oninput="bmCekVendor()"><span id="bmCkVr"></span></div>');
       if (brandBaru) own('kategori', 'Buat brand sebagai Kategori Produk di Odoo',
         '<ul><li>Odoo → <b>Inventaris → Konfigurasi → Kategori Produk</b> → buka dulu kategori brand lain (mis. <i>Viva</i>) untuk melihat pengaturannya.</li>'
-        + '<li>Klik <b>Baru</b> → nama <b>persis</b> nama brand (mis. <i>Wardah</i>) → samakan Metode Biaya, Valuasi Inventaris, dan Strategi Penghapusan dengan kategori contoh → Simpan.</li></ul>'
+        + '<li>Klik <b>Baru</b> → nama <b>persis</b> nama brand (mis. <i>Wardah</i>) → samakan Metode Biaya, Valuasi Inventaris, dan Strategi Penghapusan dengan kategori contoh → Simpan.</li>'
+        + '<li>Tab <b>Penilaian Stok Persediaan</b>: Metode penetapan biaya <b>WAJIB "Biaya Rata-Rata (AVCO)"</b> — bawaan Odoo "Standar Harga" membuat modal produk tetap 0.</li></ul>'
         + '<div class="tip">Satu kategori per brand. Bila satu nota berisi beberapa brand baru, buat semuanya.</div>');
       sec('Saat barang datang');
     } else sec('Saat barang datang');
