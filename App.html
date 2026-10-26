@@ -301,7 +301,7 @@
     var perlu = ALL.filter(function(r){ return r.status !== 'OK'; }).length;
     $('cnt').textContent = SHOWN.length + ' label tampil · ' + perlu + ' perlu dicetak';
     if (!SHOWN.length) { $('list').innerHTML = '<div class="empty">Tidak ada label yang cocok.</div>'; return; }
-    var h = '<table><tr><th style="width:30px"></th><th>Nama di Label</th><th>Brand</th><th>SKU</th><th class="num">Harga</th><th>Status</th></tr>';
+    var h = '<table><tr><th style="width:30px"></th><th>Nama di Label</th><th>Brand</th><th>SKU</th><th>Barcode</th><th class="num">Harga</th><th>Status</th></tr>';
     SHOWN.slice(0, LIMIT).forEach(function(r){
       var on = SEL[r.id];
       var pc = r.status==='OK' ? 'p-ok' : r.status==='Belum dicetak' ? 'p-belum' : 'p-ulang';
@@ -310,6 +310,9 @@
         + '<td>'+esc(r.nama)+(r.dipecah?'<div class="warn">Harga antar shade beda — label dipisah per produk</div>':'')+'</td>'
         + '<td>'+esc(r.brand)+'</td>'
         + '<td class="muted">'+(r.jumlah>1 ? r.jumlah+' SKU' : esc(r.skus[0]))+'</td>'
+        + '<td class="muted" style="font-size:12px;white-space:nowrap">'+(r.barcodes.length
+            ? r.barcodes.slice(0,3).map(esc).join('<br>') + (r.barcodes.length>3 ? '<br>+'+(r.barcodes.length-3)+' lagi' : '')
+            : '—')+'</td>'
         + '<td class="num">'+(r.promo?'<span class="co">'+rp(r.het)+'</span>':'')+'<b>'+rp(r.jual)+'</b>'+(r.promo?' <span class="muted">-'+r.diskon+'%</span>':'')+'</td>'
         + '<td><span class="pill '+pc+'">'+esc(r.status||'OK')+'</span></td></tr>';
     });
