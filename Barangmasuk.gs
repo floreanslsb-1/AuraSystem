@@ -971,8 +971,15 @@ function findNota_(ss, id) {
 }
 function listNota_(ss) {
   const sh = ss.getSheetByName(BM.T_NOTA), last = sh.getLastRow(); if (last < 2) return [];
-  const n = Math.min(30, last - 1);                       // hanya 30 nota terakhir yang dibaca
-  return sh.getRange(last - n + 1, 1, n, 10).getValues().reverse().map(function (r) {
+  // nota yang BELUM Selesai selalu tampil (berapa pun umurnya); nota Selesai cukup 30 terakhir
+  const all = sh.getRange(2, 1, last - 1, 10).getValues(), pilih = [];
+  let sisaSelesai = 30;
+  for (let i = all.length - 1; i >= 0; i--) {             // dari yang terbaru
+    if (!all[i][0]) continue;
+    if (all[i][2] !== 'Selesai') pilih.push(all[i]);
+    else if (sisaSelesai-- > 0) pilih.push(all[i]);
+  }
+  return pilih.map(function (r) {
     let d = {}; try { d = JSON.parse(r[9]); } catch (e) {}
     return { id: r[0], diubah: r[1] ? Utilities.formatDate(new Date(r[1]), 'Asia/Jakarta', 'dd/MM HH:mm') : '',
              status: r[2], vendor: r[3], no: r[4], tgl: String(r[5]), total: r[6], baris: r[7], file: r[8],
